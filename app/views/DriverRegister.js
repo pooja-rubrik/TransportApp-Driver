@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import {
 	View, StyleSheet, 
-	Image, TextInput, 
+    Image, TextInput, 
+    Platform,
 } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // import { TextField } from 'react-native-material-textfield';
 import { RaisedTextButton } from 'react-native-material-buttons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -14,6 +16,7 @@ import logo from '../assets/icons/logorubrik.png';
 import COLOR from '../services/AppColor';
 import STRCONSTANT from '../services/StringConstants';
 import { deviceType } from '../stylesheets/AppDimensions';
+const platform = Platform.OS;
 
 class DriverRegister extends Component {
 	constructor(props) {
@@ -129,87 +132,90 @@ class DriverRegister extends Component {
             showAlertLoader, errorText, alertTitle, showCancel, showConfirm } = this.state;
         return (
             <Wallpapers>
-                <Image style={styles.logoStyles} source={logo} />
-                <View style={styles.TextInputView}>
-                    <TextInput
-                        label=''
-                        value={`${firstName}`}
-                        onChangeText={(firstName) => this.setState({ firstName })}
-                        style={styles.textFieldStylesOwn}
-                        labelFontSize={18}
-                        autoFocus={true}
-                        placeholder={STRCONSTANT.DRIVER_NAME}
-                        placeholderTextColor={COLOR.PLACEHOLDER}
-                        lineWidth={0}
-                        activeLineWidth={0}
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                    />
-                    <TextInput
-                        label=''
-                        value={`${license}`}
-                        onChangeText={(license) => this.setState({ license })}
-                        style={styles.textFieldStylesOwn}
-                        labelFontSize={18}
-                        autoFocus={true}
-                        placeholder={STRCONSTANT.DRIVER_LICENSE}
-                        placeholderTextColor={COLOR.PLACEHOLDER}
-                        lineWidth={0}
-                        activeLineWidth={0}
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                    />
-                    <TextInput
-                        label=''
-                        value={`${vehicleNo}`}
-                        onChangeText={(vehicleNo) => this.setState({ vehicleNo })}
-                        style={styles.textFieldStylesOwn}
-                        labelFontSize={18}
-                        autoFocus={true}
-                        placeholder={STRCONSTANT.DRIVER_VEHICLE}
-                        placeholderTextColor={COLOR.PLACEHOLDER}
-                        lineWidth={0}
-                        activeLineWidth={0}
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                    />
-                    <TextInput
-                        label=''
-                        value={`${phoneNo}`}
-                        onChangeText={(phoneNo) => this.setState({ phoneNo })}
-                        style={styles.textFieldStylesOwn}
-                        labelFontSize={18}
-                        autoFocus={true}
-                        placeholder={STRCONSTANT.DRIVER_PHONE}
-                        placeholderTextColor={COLOR.PLACEHOLDER}
-                        lineWidth={0}
-                        activeLineWidth={0}
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                    />
-                    
-                    
-                    <TextInput
-                        label=''
-                        value={`${address}`}
-                        onChangeText={ (address) => this.setState({ address }) }
-                        style={styles.textAreaStyles}
-                        labelFontSize = {18}
-                        autoFocus={true}
-                        multiline={true}
-                        numberOfLines={6}
-                        placeholder={ STRCONSTANT.DRIVER_ADDRESS }
-                        placeholderTextColor={COLOR.PLACEHOLDER}
-                    />
-                    <RaisedTextButton 
-                        title={ STRCONSTANT.REG_BTN_TITLE } 
-                        color={ COLOR.BUTTON_COLOR }
-                        titleColor = { COLOR.BUTTON_FONT_COLOR }
-                        onPress = { () => this.registerDriver() }
-                        style = { styles.buttonHelp }
-                        titleStyle = {styles.titleStyle}
-                    />
-                </View>
+                <KeyboardAwareScrollView>
+                    <Image style={styles.logoStyles} source={logo} />
+                    <View style={styles.TextInputView}>
+                        <TextInput
+                            label=''
+                            value={`${firstName}`}
+                            onChangeText={(firstName) => this.setState({ firstName })}
+                            style={styles.textFieldStylesOwn}
+                            labelFontSize={18}
+                            autoFocus={true}
+                            placeholder={STRCONSTANT.DRIVER_NAME}
+                            placeholderTextColor={COLOR.PLACEHOLDER}
+                            lineWidth={0}
+                            activeLineWidth={0}
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                        />
+                        <TextInput
+                            label=''
+                            value={`${license}`}
+                            onChangeText={(license) => this.setState({ license })}
+                            style={styles.textFieldStylesOwn}
+                            labelFontSize={18}
+                            autoFocus={true}
+                            placeholder={STRCONSTANT.DRIVER_LICENSE}
+                            placeholderTextColor={COLOR.PLACEHOLDER}
+                            lineWidth={0}
+                            activeLineWidth={0}
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                        />
+                        <TextInput
+                            label=''
+                            value={`${vehicleNo}`}
+                            onChangeText={(vehicleNo) => this.setState({ vehicleNo })}
+                            style={styles.textFieldStylesOwn}
+                            labelFontSize={18}
+                            autoFocus={true}
+                            placeholder={STRCONSTANT.DRIVER_VEHICLE}
+                            placeholderTextColor={COLOR.PLACEHOLDER}
+                            lineWidth={0}
+                            activeLineWidth={0}
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                        />
+                        <TextInput
+                            label=''
+                            value={`${phoneNo}`}
+                            onChangeText={(phoneNo) => this.setState({ phoneNo })}
+                            style={styles.textFieldStylesOwn}
+                            labelFontSize={18}
+                            autoFocus={true}
+                            placeholder={STRCONSTANT.DRIVER_PHONE}
+                            placeholderTextColor={COLOR.PLACEHOLDER}
+                            lineWidth={0}
+                            activeLineWidth={0}
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                        />
+                        
+                        
+                        <TextInput
+                            label=''
+                            value={`${address}`}
+                            onChangeText={ (address) => this.setState({ address }) }
+                            style={styles.textAreaStyles}
+                            labelFontSize = {18}
+                            autoFocus={true}
+                            multiline={true}
+                            numberOfLines={6}
+                            placeholder={ STRCONSTANT.DRIVER_ADDRESS }
+                            placeholderTextColor={COLOR.PLACEHOLDER}
+                        />
+                        <RaisedTextButton 
+                            title={ STRCONSTANT.REG_BTN_TITLE } 
+                            color={ COLOR.BUTTON_COLOR }
+                            titleColor = { COLOR.BUTTON_FONT_COLOR }
+                            onPress = { () => this.registerDriver() }
+                            style = { styles.buttonHelp }
+                            titleStyle = {styles.titleStyle}
+                        />
+                    </View>
+                </KeyboardAwareScrollView>
+                
                 <AppAlert
 					show={showAlertError}
 					showProgress={false}
@@ -256,7 +262,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		marginTop: 5,
         borderWidth: 0,
-        fontSize: 18
+        fontSize: platform == 'ios'?18: 14
 
 	},
 	TextInputView: {
@@ -267,7 +273,8 @@ const styles = StyleSheet.create({
 	buttonHelp: {
 		borderRadius: 20,
 		height: (deviceType == 'iphone') ? 40 : 50,
-        marginTop: 25,
+        marginTop: platform == 'ios' ? 25 : 15,
+        // bottom: 0,
         fontSize: 18
 	},
     textAreaStyles: {
@@ -277,7 +284,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingTop: 10,
         height: 150,
-        fontSize: 18
+        fontSize: platform == 'ios'?18: 14
     },
 	titleStyle:{
 		fontSize: 18

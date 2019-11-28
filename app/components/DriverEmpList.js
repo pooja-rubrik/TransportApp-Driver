@@ -122,7 +122,7 @@ export class DriverEmployee extends React.PureComponent {
     }
 
     expandCard = (isExpand, currId) => {
-
+        console.log('>>>>>>', isExpand, currId)
         if (this.state.currOpenId == currId) {
             this.setState({
                 currOpenId: ''

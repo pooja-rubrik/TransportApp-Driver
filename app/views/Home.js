@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import {
-	Text, StyleSheet,
-	Platform, View, ScrollView
+	ScrollView, StyleSheet,
+	Platform, View, Image,
+	TouchableOpacity
 } from "react-native";
 import { observer, inject } from "mobx-react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -20,11 +21,10 @@ import { HeaderMenu, Item } from '../components/HeaderDropdownAndroid';
 import { deviceType } from '../stylesheets/AppDimensions';
 import DateTime from '../components/DateTimePicker';
 import CheckInTab from '../components/CheckInTabs';
-
-
 import StorageService from '../services/StorageService';
 import { AppAlert } from '../components/Alert';
 import DriverEmpList from '../components/DriverEmpList';
+import cancelTime from '../assets/icons/cancel.png'
 
 const platform = Platform.OS;
 const timeout = 2000;
@@ -337,7 +337,7 @@ class Home extends Component {
 
     render() {
 		console.disableYellowBox = true;
-		const myIcon = <Icon name="remove" size={14} color="#fff" raised onPress={() => this.removeTime()}/>;
+		// const myIcon = <Icon name="remove" size={14} color="#fff" raised onPress={() => this.removeTime()}/>;
         let {pickDateValue, timePlaceHolder, formatTime, format,
 			datePickerMode, datePlaceHolder, pickTimeValue, 
 			loginMinTime, loginMaxTime, loginMin,
@@ -413,9 +413,13 @@ class Home extends Component {
 								minuteInterval={loginMin}
 							/>
 							<View style={styles.iconOuter}>
-								<View style = {styles.iconView}>
+								{/* <View style = {styles.iconView}>
 									{myIcon}
-								</View>
+								</View> */}
+								<TouchableOpacity onPress={() => this.removeTime()}>
+									<Image style={styles.iconCancel} source={cancelTime} />
+								</TouchableOpacity>
+								
 							</View>
 							
 							
@@ -541,8 +545,14 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		borderBottomWidth: 1, 
 		borderBottomColor: '#333',
-		height: hp('4.95%'),
+		height: hp('5%'),
 		width: wp('9%'),
+		padding:7,
+		paddingTop:9
+	}, 
+	iconCancel: {
+		height: 22,
+		width: wp('5.5%')
 	}
 })
 export default inject("rootStore")(observer(Home));

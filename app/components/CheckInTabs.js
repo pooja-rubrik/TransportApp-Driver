@@ -12,6 +12,7 @@ export default class CheckInTab extends React.PureComponent {
         super(props);
     }
     tabSwitch = (type) => {
+        console.log('switch>>>', type)
         this.props.tabSwitch(type);
     }
 

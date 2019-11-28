@@ -3,8 +3,6 @@ import { createStackNavigator, createAppContainer, createSwitchNavigator } from 
 // import pages
 import Login from './views/Login';
 import DriverRegister from './views/DriverRegister';
-import DriverHome from './views/DriverHome';
-import DriverViewEmployee from './views/DriverViewEmployee';
 import AuthLoadingScreen from './views/AuthLoading';
 
 //import constants
@@ -15,9 +13,7 @@ import Home from './views/Home';
 const DriverAppStack = createStackNavigator(
   {
     HomeScreen: {screen: Home},
-    DriverHomeScreen: { screen: DriverHome },
     DriverProfileScreen: { screen: DriverProfile},
-    DriverViewEmployeeScreen: { screen: DriverViewEmployee },
   },
   {
     defaultNavigationOptions: {

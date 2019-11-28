@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import {
 	View, StyleSheet,
-	Image, TextInput,
+	Image, TextInput, 
+	Platform
 } from "react-native";
 import { RaisedTextButton } from 'react-native-material-buttons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -14,7 +15,7 @@ import logo from '../assets/icons/logorubrik.png';
 import COLOR from '../services/AppColor';
 import STRCONSTANT from '../services/StringConstants';
 import { deviceType } from '../stylesheets/AppDimensions';
-
+const platform = Platform.OS;
 
 class Login extends Component {
 	constructor(props) {
@@ -224,7 +225,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		marginTop: 10,
 		borderWidth: 0,
-		fontSize: 18
+		fontSize: platform == 'ios'?18: 14
 	},
 	TextInputView: {
 		width: wp('95%'),

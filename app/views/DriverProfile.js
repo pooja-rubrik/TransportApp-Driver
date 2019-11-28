@@ -8,6 +8,7 @@ import { toJS } from 'mobx';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RaisedTextButton } from 'react-native-material-buttons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Wallpapers from "../components/Wallpaper";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -105,6 +106,10 @@ class DriverProfile extends Component {
                 <View style={styles.container}>
                     <Image style={styles.avtarStyle} source={avtarImg} />
                     <Text style={styles.fullName}>{this.driverData.driverName}</Text>
+                    <KeyboardAwareScrollView
+                        resetScrollToCoords={{ x: 0, y: 0 }}
+                        scrollEnabled={false}
+                    >
                     <View style={styles.contentSec}>
 
                         <View style={styles.menuContainer}>
@@ -270,7 +275,9 @@ class DriverProfile extends Component {
 
                         </View>
 
-                    </View>
+                        </View>
+                    </KeyboardAwareScrollView>
+                    
 
                 </View>
 
@@ -351,7 +358,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     buttonSec: {
-        bottom: 50,
+        bottom: 20,
         alignSelf: 'center',
         position: 'absolute'
         // marginBottom: 0

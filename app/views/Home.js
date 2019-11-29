@@ -334,8 +334,11 @@ class Home extends Component {
 		console.log('data>>', data)
 		this.hideAlert('confirm');
 	}
-
+	
     render() {
+		// return (
+		// 	<View/>
+		// );
 		console.disableYellowBox = true;
 		// const myIcon = <Icon name="remove" size={14} color="#fff" raised onPress={() => this.removeTime()}/>;
         let {pickDateValue, timePlaceHolder, formatTime, format,
@@ -353,6 +356,7 @@ class Home extends Component {
        
         return (
             <View style={styles.mainContainer}>
+				{/* <CheckInTab checkInTabVisible = {checkInTabVisible} tabSwitch = {this.tabSwitch}/> */}
 				<ScrollView>
 				<View style={styles.mapContainer}>
 						<MapView
@@ -367,22 +371,12 @@ class Home extends Component {
 							rotateEnabled={true}
 							ref={(ref) => { this.mapRef = ref }}
 							region={toJS(this.mapStore.mapData.region)}
-							// onMapReady={() => {
-							// 	this.mapRef.fitToSuppliedMarkers(this.markerArr,
-							// 	{ 
-							// 		edgePadding: {
-							// 			top: 50,
-							// 			right: 50,
-							// 			bottom: 50,
-							// 			left: 50
-							// 		}
-							// 	}
-							// 	)}
-							// }
+							
 						>
 						{startPoints}
 						</MapView>
 					</View>
+					
 					<View style={styles.contentSection}>
 						
 						<View style={styles.filterSection}>
@@ -393,7 +387,7 @@ class Home extends Component {
 								changeDate = { (pickDateValue) => { this.filterByDate(pickDateValue) } } 
 								placeholder = {datePlaceHolder}
 								format = {format}
-								inputStyle = {styles.dateinputStyle}
+								// inputStyle = {styles.dateinputStyle}
 								futureDate = {1}
 								style = {styles.dateStyle}
 								iconStyle = {{left:5, height: 25, width: 25}}
@@ -413,9 +407,7 @@ class Home extends Component {
 								minuteInterval={loginMin}
 							/>
 							<View style={styles.iconOuter}>
-								{/* <View style = {styles.iconView}>
-									{myIcon}
-								</View> */}
+								
 								<TouchableOpacity onPress={() => this.removeTime()}>
 									<Image style={styles.iconCancel} source={cancelTime} />
 								</TouchableOpacity>
@@ -423,15 +415,12 @@ class Home extends Component {
 							</View>
 							
 							
-							{/* <MaterialIcons name="calendar-remove-outline" size={35} color="#f00" style={styles.iconRemove}/> */}
+							
 						</View>
-						
 						<CheckInTab checkInTabVisible = {checkInTabVisible} tabSwitch = {this.tabSwitch}/>
-					
 						<DriverEmpList empData = {empList} assignType = {assignType} tripAction = {this.tripAction}/>
-					
-						
 					</View>
+					
 				</ScrollView>
 				
                 <AppAlert
@@ -515,14 +504,23 @@ const styles = StyleSheet.create({
 		paddingRight:0
 	},
     dateStyle:{ 
-        'width': wp('49%'), 
-        marginLeft:3, 
+		// justifyContent : 'space-around',
+		// alignContent : 'space-around',
+		flex:1,
+        // 'width': wp('49%'), 
+		// marginLeft:3, 
+		height: "100%",
+		margin : 0,
+		padding:0,
+		backgroundColor:"green"
+
 	},
 	timeStyle:{ 
         'width': wp('40%'), 
         marginLeft:3, 
     },
     contentSection: {
+		flex : 1
         // top: hp('20%'),
 	}, 
 	

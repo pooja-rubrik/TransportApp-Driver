@@ -1,9 +1,9 @@
 import React from "react";
 import {
 	Text, StyleSheet,
-	View
+	View, TouchableOpacity
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export default class CheckInTab extends React.PureComponent {
@@ -20,22 +20,25 @@ export default class CheckInTab extends React.PureComponent {
         let {checkInTabVisible} = this.props
         return (
             <View style={styles.checkinTab}>
-                <View style={checkInTabVisible ? [styles.singleTab, styles.activeTab]: [styles.singleTab, styles.inActiveTab]}>
-                    <TouchableOpacity onPress= {() => this.tabSwitch('checkin')}>
+                <TouchableOpacity onPress= {() => this.tabSwitch('checkin')}>
+                    <View style={checkInTabVisible ? [styles.singleTab, styles.activeTab]: [styles.singleTab, styles.inActiveTab]}>
+                        
                         <Text style={checkInTabVisible ? [styles.tabTextStyle, styles.activeTextStyle]: [styles.tabTextStyle]}>
                             CHECK-IN
                         </Text> 
-                    </TouchableOpacity>
-                </View>
+                    </View>
+                </TouchableOpacity>
                 
-                <View style={!checkInTabVisible ? [styles.singleTab, styles.activeTab]: [styles.singleTab, styles.inActiveTab]}>
-                    <TouchableOpacity onPress= {() => this.tabSwitch('checkout')}>
+                <TouchableOpacity onPress= {() => this.tabSwitch('checkout')}>
+                    <View style={!checkInTabVisible ? [styles.singleTab, styles.activeTab]: [styles.singleTab, styles.inActiveTab]}>
+                        
                         <Text style={!checkInTabVisible ? [styles.tabTextStyle, styles.activeTextStyle]: [styles.tabTextStyle]}>
                             CHECK-OUT
                         </Text>
-                    </TouchableOpacity>
                     
-                </View>
+                    </View>
+                </TouchableOpacity>
+                
                         
                 
             </View>

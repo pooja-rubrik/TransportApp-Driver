@@ -1,9 +1,9 @@
 import React from "react";
 import {
-    Text, StyleSheet,
+    Text, StyleSheet, TouchableOpacity,
     View, Image, ScrollView
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CardView from 'react-native-cardview'
 import { RaisedTextButton } from 'react-native-material-buttons';

@@ -108,8 +108,8 @@ export default class DateTime extends React.PureComponent {
 }
 const styles = StyleSheet.create({
     dateView: {
-        height: 8,
-        width: 160,
+        // height: 10,
+        // width: 160,
         //color: '#6a6a6a',
         
     }

@@ -1,12 +1,14 @@
 import React from "react";
 import Modal from "react-native-modal";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput} from "react-native";
+import { View, Text, StyleSheet, Platform} from "react-native";
 import { RaisedTextButton } from 'react-native-material-buttons';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CodeInput from 'react-native-confirmation-code-input';
 
 import COLOR from '../services/AppColor';
 import STRCONSTANT from '../services/StringConstants';
+
+const platform = Platform.OS;
 
 export default class EnterOTP extends React.PureComponent {
     
@@ -38,60 +40,54 @@ export default class EnterOTP extends React.PureComponent {
             visible={this.props.otpModalVisible}
         >
             <View>
-                <View style={styles.modalView} >
-                    {/* <TouchableOpacity
-                        onPress={this.closeModalFunc}
-                    >
-                        <Text style={styles.closeText}>X</Text>
-                    </TouchableOpacity> */}
-                    <View>
-                        <View style={styles.TextInputView}>
-                            <View>
-                                <Text style={styles.headText}>
-                                   ENTER OTP
-                                </Text>
-                                {/* <TextInput
-                                    label=''
-                                    value={`${enterOTP}`}
-                                    style={styles.textInputStyles}
-                                    labelFontSize={0}
-                                    onChangeText={(enterOTP) => this.setState({ enterOTP })}
-                                    placeholder='- - - - - -'
-                                    lineWidth={0}
-                                    activeLineWidth={0}
-                                    autoCapitalize='none'
-                                    autoCorrect={false}
-                                    placeholderTextColor={COLOR.PLACEHOLDER}
-                                /> */}
-                                <CodeInput
-                                    ref="codeInputRef2"
-                                    keyboardType="numeric"
-                                    codeLength={6}
-                                    className={'border-b'}
-                                    autoFocus={true}
-                                    space={10}
-                                    size={15}
-                                    onFulfill={(isValid, code) => this.onFinishCheckingOTP(isValid, code)}
-                                    containerStyle={{ marginBottom: 20 }}
-                                    codeInputStyle={{ paddingTop: 0 }}
-                                    />
-                           
-                            </View>
-                            <View style={styles.ButtonSubmit}>
-                                <RaisedTextButton
-                                    title={STRCONSTANT.SUBMIT}
-                                    color={COLOR.BUTTON_COLOR_OTP}
-                                    titleColor={COLOR.BUTTON_FONT_COLOR}
-                                    onPress={this.submitRequest}
-                                    style={styles.buttonEmail}
-                                    titleStyle = {styles.titleStyle}
-                                    disabled = {disableSubmit}
+                <View style={platform == "ios"?styles.modalViewIOS:styles.modalView} >
+                    <View style={styles.TextInputView}>
+                        <View>
+                            <Text style={styles.headText}>
+                                ENTER OTP
+                            </Text>
+                            {/* <TextInput
+                                label=''
+                                value={`${enterOTP}`}
+                                style={styles.textInputStyles}
+                                labelFontSize={0}
+                                onChangeText={(enterOTP) => this.setState({ enterOTP })}
+                                placeholder='- - - - - -'
+                                lineWidth={0}
+                                activeLineWidth={0}
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                                placeholderTextColor={COLOR.PLACEHOLDER}
+                            /> */}
+                            <CodeInput
+                                ref="codeInputRef2"
+                                keyboardType="numeric"
+                                codeLength={6}
+                                className={'border-b'}
+                                autoFocus={true}
+                                space={10}
+                                size={15}
+                                onFulfill={(isValid, code) => this.onFinishCheckingOTP(isValid, code)}
+                                containerStyle={{ marginBottom: 20 }}
+                                codeInputStyle={{ paddingTop: 0 }}
                                 />
-                            </View>
+                        
+                        </View>
+                        <View style={styles.ButtonSubmit}>
+                            <RaisedTextButton
+                                title={STRCONSTANT.SUBMIT}
+                                color={COLOR.BUTTON_COLOR_OTP}
+                                titleColor={COLOR.BUTTON_FONT_COLOR}
+                                onPress={this.submitRequest}
+                                style={styles.buttonEmail}
+                                titleStyle = {styles.titleStyle}
+                                disabled = {disableSubmit}
+                            />
                         </View>
                     </View>
                 </View>
             </View>
+           
         </Modal>
 	  );
 	}
@@ -99,6 +95,17 @@ export default class EnterOTP extends React.PureComponent {
 
 const styles = StyleSheet.create({
     modalView: {
+		backgroundColor: COLOR.OTP_BG_COLOR,
+		padding: 20,
+		borderRadius: 5,
+        height: hp('16%'),
+        borderColor: COLOR.HEADER_BG_COLOR,
+        borderWidth: .2,
+        width: wp('45%'),
+        alignSelf: 'center',
+        opacity: .95
+    },
+    modalViewIOS: {
 		backgroundColor: COLOR.OTP_BG_COLOR,
 		padding: 20,
 		borderRadius: 5,

@@ -1,21 +1,19 @@
 import React from "react";
 import {
     Text, StyleSheet, TouchableOpacity,
-    View, Image, ScrollView
+    View, Image, Platform
 } from "react-native";
-// import { TouchableOpacity } from "react-native-gesture-handler";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CardView from 'react-native-cardview'
 import { RaisedTextButton } from 'react-native-material-buttons';
-import { Dimensions } from "react-native";
-// import { ScrollView } from "react-native-gesture-handler";
 
 import statusIconBook from '../assets/icons/cabbooked.png'
 import statusIconNotBook from '../assets/icons/cabnotbooked.png'
 import STRCONSTANT from '../services/StringConstants';
 import COLOR from '../services/AppColor';
 import EnterOTP from "./EnterOTP";
-// const { height } = Dimensions.get('window');
+
+const platform = Platform.OS;
 
 export default class DriverEmpList extends React.PureComponent {
 
@@ -28,7 +26,6 @@ export default class DriverEmpList extends React.PureComponent {
             currOpenId: '',
             currIndex: 0,
             currEndTripEmp: 0,
-            // contentInsetBottom: 320
         }
     }
 
@@ -55,11 +52,6 @@ export default class DriverEmpList extends React.PureComponent {
         this.props.tripAction(STRCONSTANT.DRIVER_END_TRIP, this.state.currEndTripEmp, otpData.enterOTP);
     }
 
-    // onContentSizeChange = (contentWidth, contentHeight) => {
-    //     // Save the content height in state
-    //     this.setState({ screenHeight: contentHeight });
-    // };
-
 
     render() {
         let { otpModalVisible } = this.state;
@@ -77,30 +69,26 @@ export default class DriverEmpList extends React.PureComponent {
                 )
             }) :
            null
-            // console.log(empList)
+           
         return (
             <View>
-                {/* <ScrollView
-                    // style = {{flex: 1,}}
-                    // contentInset={{top:0, bottom: this.state.contentInsetBottom }}
-                    // automaticallyAdjustContentInsets={false}
-                > */}
-                    {(empList == null || empList[0] == null)? 
+                
+                {(empList == null || empList[0] == null)? 
                     <CardView
                         cardElevation={4}
                         cardMaxElevation={4}
                         cornerRadius={5}
                         style={styles.cardView}>
                         <View style={styles.cardHead}>
-                            <Text style={styles.headText}>
+                            <Text style={platform == "ios" ? styles.headTextIOS: styles.headText}>
                                 No Employee!
                             </Text>
                         </View>
                     </CardView>:
                     empList
-                   }
-                {/* </ScrollView> */}
-                 <EnterOTP otpModalVisible={otpModalVisible} closeModalFunc={this.closeModalFunc} submitOTP={this.submitOTP} />
+                }
+                
+                <EnterOTP otpModalVisible={otpModalVisible} closeModalFunc={this.closeModalFunc} submitOTP={this.submitOTP} />
              </View>
 
         )
@@ -146,6 +134,10 @@ export class DriverEmployee extends React.PureComponent {
     render() {
         let { isExpand, currOpenId, buttonLabel } = this.state;
         let { employee } = this.props;
+        if(employee.empBookStatus == 'INPROGRESS') {
+            this.setState({buttonLabel: STRCONSTANT.DRIVER_END_TRIP});
+        }
+        
         return (
             <CardView
                 cardElevation={4}
@@ -156,19 +148,17 @@ export class DriverEmployee extends React.PureComponent {
             >
                 <TouchableOpacity onPress={() => this.expandCard(isExpand, employee.empID)}>
                     <View style={styles.cardHead}>
-                        <Text style={styles.headText}>
+                        <Text style={platform == "ios" ? styles.headTextIOS : styles.headText}>
                             {employee.empName}
                         </Text>
-                        {(employee.empBookStatus == 'ASSIGN' || employee.empBookStatus == 'INPROGRESS')?
-                            <View style={styles.iconView}>
+                        <View style={platform == "ios" ? styles.iconViewIOS : styles.iconView}>
+                            {(employee.empBookStatus == 'ASSIGN' || employee.empBookStatus == 'INPROGRESS')?
                                 <Image style={styles.statusIcon} source={statusIconNotBook} />
-                            </View>
-                            : (employee.empBookStatus == 'COMPLETED')?
-                            <View style={styles.iconView}>
+                                : (employee.empBookStatus == 'COMPLETED')?
                                 <Image style={styles.statusIcon} source={statusIconBook} />
-                            </View> 
-                            : null
-                        }
+                                : null
+                            }
+                        </View>
                     </View>
                 </TouchableOpacity>
                 {
@@ -193,7 +183,7 @@ export class DriverEmployee extends React.PureComponent {
                                 </View>
                                 <View style={styles.rightSec}>
                                     {
-                                       (employee.empBookStatus == 'ASSIGN') ?
+                                       (employee.empBookStatus == 'ASSIGN' || employee.empBookStatus == 'INPROGRESS') ?
                                             <RaisedTextButton
                                                 title={buttonLabel}
                                                 color={COLOR.BUTTON_COLOR_DRIVER}
@@ -246,14 +236,26 @@ const styles = StyleSheet.create({
     },
     iconView: {
         right: 10,
+        paddingTop: 5,
+
+    },
+    iconViewIOS: {
+        right: 10,
         paddingTop: 7,
 
+    },
+    headTextIOS: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#375346',
+        paddingTop: 10,
     },
     headText: {
         fontSize: 16,
         fontWeight: 'bold',
         color: '#375346',
-        paddingTop: 10
+        paddingTop: 6,
+        paddingBottom: 6
     },
     cardContent: {
         // paddingLeft: 10,

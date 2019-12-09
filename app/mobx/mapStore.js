@@ -23,11 +23,16 @@ class MapStore {
    
 	@action async locateMap(position, from_login, address) {
 		try {
-			this.mapData.region.latitude = position.lat;
-			this.mapData.region.longitude = position.lng;
-			if( from_login == "driver" ) {
-				this.driverMarkers.push({ coordinates:{ latitude: position.lat, longitude: position.lng}, title: address })
-			} 
+			if (position == null) {
+				this.driverMarkers = [];
+			} else {
+				this.mapData.region.latitude = position.lat;
+				this.mapData.region.longitude = position.lng;
+				if( from_login == "driver" ) {
+					this.driverMarkers.push({ coordinates:{ latitude: position.lat, longitude: position.lng}, title: address })
+				} 
+			}
+			
 			
 			
         } catch (e) {

@@ -8,7 +8,7 @@ import { observer, inject } from "mobx-react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 // import CardView from 'react-native-cardview';
 // import { RaisedTextButton } from 'react-native-material-buttons';
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 // import ModalDropdown from 'react-native-modal-dropdown';
 import { toJS, action } from 'mobx';
@@ -66,8 +66,6 @@ class Home extends Component {
 			formatTime: 'HH:mm',
 			loginMinTime: this.utilities.loginTime.split('-')[0],
 			loginMaxTime: this.utilities.loginTime.split('-')[1],
-			// logoutMinTime: this.utilities.logoutTime.split('-')[0],
-			// logoutMaxTime: this.utilities.logoutTime.split('-')[1],
 			loginMin: 30,
 			showAlertError: false,
 			showAlertLoader: false,
@@ -79,7 +77,7 @@ class Home extends Component {
 			assignType: 'LOGIN',
 			empList: [],
 			empOTP: '',
-			confirmAction: 'logout'
+			confirmAction: 'logout',
 		};
     }
 
@@ -142,7 +140,12 @@ class Home extends Component {
 			})
 			.catch(error => console.warn(error));
 		})
+		console.log('marker leng>>', this.markerArr.length)
+		if(this.markerArr.length == 0){
+			this.mapStore.locateMap(null, 'driver', null);
+		}
 		animationTimeout = setTimeout(() => {
+			console.log('zoom marker arr>>>', this.markerArr)
 			this.mapRef.fitToSuppliedMarkers(
 				this.markerArr,
 				{ 
@@ -186,6 +189,7 @@ class Home extends Component {
 					}
 					
 				})
+				
 				console.log(this.markerArr);
 				this.getMarkerLatLong();
 				
@@ -336,12 +340,8 @@ class Home extends Component {
 	}
 	
     render() {
-		// return (
-		// 	<View/>
-		// );
 		console.disableYellowBox = true;
-		// const myIcon = <Icon name="remove" size={14} color="#fff" raised onPress={() => this.removeTime()}/>;
-        let {pickDateValue, timePlaceHolder, formatTime, format,
+		let {pickDateValue, timePlaceHolder, formatTime, format,
 			datePickerMode, datePlaceHolder, pickTimeValue, 
 			loginMinTime, loginMaxTime, loginMin,
 			showAlertError, showAlertLoader, errorText, alertTitle, showCancel, 
@@ -349,11 +349,14 @@ class Home extends Component {
             
         var startPoints = toJS(this.mapStore.driverMarkers) ? 
 		toJS(this.mapStore.driverMarkers).map((item, index)=>{
-        return <MapView.Marker coordinate={item.coordinates} key={index} identifier={item.title}
-                title = {item.title}
+		return <MapView.Marker 
+				coordinate={item.coordinates} 
+				key={index} 
+				identifier={item.title}
+				title = {item.title}
             />
-        }) : null;
-       
+        }) : <View></View>;
+		
         return (
             <View style={styles.mainContainer}>
 				{/* <CheckInTab checkInTabVisible = {checkInTabVisible} tabSwitch = {this.tabSwitch}/> */}
@@ -371,7 +374,8 @@ class Home extends Component {
 							rotateEnabled={true}
 							ref={(ref) => { this.mapRef = ref }}
 							region={toJS(this.mapStore.mapData.region)}
-							
+							loadingEnabled={true}
+							// cacheEnabled={false}
 						>
 						{startPoints}
 						</MapView>
@@ -387,7 +391,7 @@ class Home extends Component {
 								changeDate = { (pickDateValue) => { this.filterByDate(pickDateValue) } } 
 								placeholder = {datePlaceHolder}
 								format = {format}
-								// inputStyle = {styles.dateinputStyle}
+								inputStyle = {styles.dateinputStyle}
 								futureDate = {1}
 								style = {styles.dateStyle}
 								iconStyle = {{left:5, height: 25, width: 25}}
@@ -406,7 +410,7 @@ class Home extends Component {
 								maxDate = {loginMaxTime}
 								minuteInterval={loginMin}
 							/>
-							<View style={styles.iconOuter}>
+							<View style={(platform == "ios") ? styles.iconOuterIOS: styles.iconOuter}>
 								
 								<TouchableOpacity onPress={() => this.removeTime()}>
 									<Image style={styles.iconCancel} source={cancelTime} />
@@ -458,19 +462,15 @@ class Home extends Component {
 const styles = StyleSheet.create({
     mainContainer: {
         flex:1,
-        // flexDirection: 'row'
     },
 	mapContainer: {
-		// ...StyleSheet.absoluteFillObject,
-        // justifyContent: 'flex-end',
+		
         width: wp('100%'),
 		alignSelf: 'center',
 	},
 	map: {
 		height: hp('20%'),
-		// top: 10
-        // marginBottom: 10
-        // ...StyleSheet.absoluteFillObject,
+		
     },
     filterSection: {
         // flex:1,
@@ -504,15 +504,13 @@ const styles = StyleSheet.create({
 		paddingRight:0
 	},
     dateStyle:{ 
-		// justifyContent : 'space-around',
-		// alignContent : 'space-around',
 		flex:1,
-        // 'width': wp('49%'), 
-		// marginLeft:3, 
-		height: "100%",
-		margin : 0,
-		padding:0,
-		backgroundColor:"green"
+        'width': wp('49%'), 
+		marginLeft:3, 
+		//height: "100%",
+		//margin : 0,
+		//padding:0,
+		// backgroundColor:"green"
 
 	},
 	timeStyle:{ 
@@ -541,9 +539,18 @@ const styles = StyleSheet.create({
 	},
 	iconOuter: {
 		backgroundColor: '#fff',
+		// borderBottomWidth: 1, 
+		// borderBottomColor: '#333',
+		// height: hp('5.3%'),
+		width: wp('9%'),
+		padding:7,
+		paddingTop:9
+	}, 
+	iconOuterIOS: {
+		backgroundColor: '#fff',
 		borderBottomWidth: 1, 
 		borderBottomColor: '#333',
-		height: hp('5%'),
+		height: hp('5.2%'),
 		width: wp('9%'),
 		padding:7,
 		paddingTop:9

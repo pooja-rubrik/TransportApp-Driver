@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         width: wp('50%'),
         alignItems: 'center',
         paddingTop: 8,
-        
+        height: hp('4.3%'),
         // textDecorationLine: 'underline'
     },
     activeTab: {

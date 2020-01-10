@@ -25,6 +25,7 @@ import StorageService from '../services/StorageService';
 import { AppAlert } from '../components/Alert';
 import DriverEmpList from '../components/DriverEmpList';
 import cancelTime from '../assets/icons/cancel.png'
+import COLOR from '../services/AppColor';
 
 const platform = Platform.OS;
 const timeout = 2000;
@@ -39,26 +40,13 @@ class Home extends Component {
 		this.vehicleNo = this.driverStore.driverData.vehicleNumber
 		this.mapStore = this.props.rootStore.mapStore;
 		this.mapRef = null;
-		// console.log(toJS(this.usersStore.users.filterEmployees));
-		// this.assignType = this.props.navigation.getParam('assignType', 'LOGIN')
 		// this.markerArr = ["Evon Technologies, IT Park, Dehradun", "MPS, IT park, dehradun", "Touchwood school, sahastradhara road, dehradun", "clock tower, dehradun", "ISBT, dehradun"]
 		this.markerArr = [];
-		// this.usersStore.users.filterEmployees.forEach(emp => {
-		// 	if(emp.type == this.assignType) {
-		// 		console.log('found>>')
-		// 		this.markerArr.push(emp.empHomeAddress)
-		// 	}
-			
-		// })
-		// console.log(this.markerArr);
+		
 		this.state = {
 			accessToken: '',
 			pickDateValue: moment().format('YYYY-MM-DD'),
-			// pickDateValue: '',
-			dropTimeValue: '',
 			pickTimeValue: '',
-			// dropDateValue: '',
-			// dropDateValue: moment().format('YYYY-MM-DD'),
 			datePickerMode: 'date',
 			datePlaceHolder: 'select Date',
 			timePlaceHolder: 'Select Time',
@@ -93,8 +81,8 @@ class Home extends Component {
 			return {
 				headerRight: (
 					<HeaderMenu>
-						<Item title="PROFILE" show="never" onPress={() => params.handleMenu('DriverProfileScreen')} />
-						<Item title="SIGNOUT" show="never" onPress={() => params.logout()} />
+						<Item title="Profile" show="never" onPress={() => params.handleMenu('DriverProfileScreen')} />
+						<Item title="Sign Out" show="never" onPress={() => params.logout()} />
 					</HeaderMenu>
 				),
 				
@@ -387,7 +375,6 @@ class Home extends Component {
 							<DateTime 
 								date = {pickDateValue} 
 								mode={datePickerMode} 
-								// changeDate = {(pickDateValue) => {this.setState({pickDateValue: pickDateValue})}} 
 								changeDate = { (pickDateValue) => { this.filterByDate(pickDateValue) } } 
 								placeholder = {datePlaceHolder}
 								format = {format}
@@ -399,7 +386,6 @@ class Home extends Component {
 							/>
 							<DateTime 
 								date = {pickTimeValue} 
-								// changeDate = {(pickTimeValue) => {this.setState({pickTimeValue: pickTimeValue})}} 
 								changeDate = { (pickTimeValue) => { this.filterByTime(pickTimeValue) }} 
 								placeholder = {timePlaceHolder}
 								format = {formatTime}
@@ -421,7 +407,10 @@ class Home extends Component {
 							
 							
 						</View>
-						<CheckInTab checkInTabVisible = {checkInTabVisible} tabSwitch = {this.tabSwitch}/>
+						<View style = {styles.checkInContainer}>
+							<CheckInTab checkInTabVisible = {checkInTabVisible} tabSwitch = {this.tabSwitch}/>
+						</View>
+						
 						<DriverEmpList empData = {empList} assignType = {assignType} tripAction = {this.tripAction}/>
 					</View>
 					
@@ -438,15 +427,20 @@ class Home extends Component {
                     showConfirmButton={showConfirm}
                     cancelText="Cancel"
                     confirmText="Okay"
-					cancelButtonColor="red"
-					confirmButtonColor = "#59997E"
+					cancelButtonColor="#1A3E50"
+                    confirmButtonColor = "#FFFFFF"
+                    contentContainerStyle = {{backgroundColor: COLOR.HEADER_BG_COLOR}}
+                    cancelButtonTextStyle = {{color: '#fff', fontSize: 15}}
+                    cancelButtonStyle = {{borderWidth: .5, borderColor: '#fff', width: wp('20%'), alignItems: 'center'}}
+                    messageStyle = {{color: '#fff'}}
+                    titleStyle = {{color: '#fff'}}
+                    confirmButtonStyle = {{borderWidth: .5, borderColor: '#165155', width: wp('20%'), alignItems: 'center'}}
+					confirmButtonTextStyle = {{color: '#165155', fontSize: 15}}
 					onCancelPressed={() => {
 						this.hideAlert('error');
                     }}
                     onConfirmPressed={(data) => { this.confirmBtnAlert(confirmAction)}}
-					contentContainerStyle = {{backgroundColor: '#317770'}}
-					messageStyle = {{color: '#fff'}}
-					titleStyle = {{color: '#fff'}}
+					
 				/>
 				<AppAlert
 					show={showAlertLoader}
@@ -461,22 +455,27 @@ class Home extends Component {
 }
 const styles = StyleSheet.create({
     mainContainer: {
-        flex:1,
+		flex:1,
+		backgroundColor: COLOR.HEADER_BG_COLOR,
+		// width: wp('97%'),
     },
 	mapContainer: {
-		
-        width: wp('100%'),
+		marginTop: 10,
+        width: wp('97%'),
 		alignSelf: 'center',
+		borderRadius: 10,
+		height: hp('20%'),
+		overflow: 'hidden',
+		marginBottom: 5
 	},
 	map: {
 		height: hp('20%'),
-		
-    },
+	},
     filterSection: {
         // flex:1,
         flexDirection:'row',
         
-        backgroundColor:'#d2d2d2',
+        backgroundColor: COLOR.HEADER_BG_COLOR,
         height: hp('5.3%')
     },
     dateinputStyle: {
@@ -484,10 +483,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff', 
         paddingRight:20, 
         borderWidth: 0, 
-        borderBottomWidth: 1, 
-        borderBottomColor: '#333',
-        borderRightWidth:1, 
-        borderRightColor: '#333' 
+        borderTopLeftRadius: 10, 
 	},
 	timeinputStyle: {
 		marginLeft:0, 
@@ -495,30 +491,19 @@ const styles = StyleSheet.create({
 		paddingRight:0, 
 		paddingLeft: 10,
         borderWidth: 0, 
-        borderBottomWidth: 1, 
-        borderBottomColor: '#333',
-        // borderRightWidth:1, 
-        // borderRightColor: '#333' 
-	},
-	datePadding: {
-		paddingRight:0
 	},
     dateStyle:{ 
 		flex:1,
         'width': wp('49%'), 
-		marginLeft:3, 
-		//height: "100%",
-		//margin : 0,
-		//padding:0,
-		// backgroundColor:"green"
-
 	},
 	timeStyle:{ 
         'width': wp('40%'), 
         marginLeft:3, 
     },
     contentSection: {
-		flex : 1
+		flex : 1,
+		width: wp('97%'),
+		alignSelf: 'center'
         // top: hp('20%'),
 	}, 
 	
@@ -544,20 +529,27 @@ const styles = StyleSheet.create({
 		// height: hp('5.3%'),
 		width: wp('9%'),
 		padding:7,
-		paddingTop:9
+		paddingTop:9,
+		borderTopRightRadius: 10
 	}, 
 	iconOuterIOS: {
 		backgroundColor: '#fff',
-		borderBottomWidth: 1, 
-		borderBottomColor: '#333',
-		height: hp('5.2%'),
+		height: hp('4.93%'),
 		width: wp('9%'),
 		padding:7,
-		paddingTop:9
+        paddingTop:9,
+        borderTopRightRadius: 10
 	}, 
+	
 	iconCancel: {
 		height: 22,
 		width: wp('5.5%')
+	},
+	checkInContainer: {
+		height: hp('5%'), 
+		backgroundColor: '#fff', 
+		borderBottomLeftRadius: 10, 
+		borderBottomRightRadius: 10
 	}
 })
 export default inject("rootStore")(observer(Home));

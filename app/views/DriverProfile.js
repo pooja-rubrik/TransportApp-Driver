@@ -15,9 +15,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import avtarImg from '../assets/icons/userlogo.png'
 import COLOR from '../services/AppColor';
 import STRCONSTANT from '../services/StringConstants';
-// import StorageService from '../services/StorageService';
 
-//images import
 import license from '../assets/icons/badge.png';
 import vehicleNum from '../assets/icons/car.png'
 import phoneNum from '../assets/icons/phone.png'
@@ -67,12 +65,7 @@ class DriverProfile extends Component {
         this.props.navigation.goBack()
         this.props.navigation.state.params.callHomeData();
     };
-    // logoutProfile = () => {
-    //     StorageService.removeData('driver_data').then(data => {
-    //         this.props.navigation.navigate('LoginScreen');
-    //     })
-        
-    // }
+  
 
     updateProfile = () => {
         driverParam = {};
@@ -100,6 +93,7 @@ class DriverProfile extends Component {
     }
 
     render() {
+        console.disableYellowBox = true;
         let { isContactVisible, contact, isAddrVisible, address, updateBtnVisible, vehicleNo, isVehicleVisible } = this.state
         return (
             <Wallpapers>
@@ -113,26 +107,18 @@ class DriverProfile extends Component {
                     <View style={styles.contentSec}>
 
                         <View style={styles.menuContainer}>
-                            {/* <Text style={styles.menuTextLeft}>
-                                Driver License
-                                </Text> */}
+                           
                             <Image style={styles.menuTextLeft} source={license} />
-                            {/* <Text style={styles.separator}>
-                                :
-                                </Text> */}
+                           
                             <Text style={styles.menuTextRight}>
                                 {this.driverData.licenseNumber}
                             </Text>
 
                         </View>
                         <View style={styles.menuContainer}>
-                            {/* <Text style={styles.menuTextLeft}>
-                                Vehicle No
-                                </Text> */}
+                           
                             <Image style={styles.menuTextLeft} source={vehicleNum} />
-                            {/* <Text style={styles.separator}>
-                            :
-                            </Text> */}
+                           
                             {
 
                             (isVehicleVisible) ?
@@ -140,39 +126,36 @@ class DriverProfile extends Component {
                                     <Text style={styles.menuTextRight}>
                                         {vehicleNo}
                                     </Text>
-                                    <TouchableOpacity onPress={() => this.EditProfile('Vehicle')}>
+                                    {/* <TouchableOpacity onPress={() => this.EditProfile('Vehicle')}>
                                         <View style={styles.iconView}>
                                             <MaterialIcons name="edit" size={19} color="#5b5a5a" />
                                         </View>
 
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                 </View>
 
                                 :
-                                <TextInput
-                                    label=''
-                                    value={`${vehicleNo}`}
-                                    onChangeText={(vehicleNo) => this.setState({ vehicleNo })}
-                                    style={styles.textFieldStylesOwn}
-                                    labelFontSize={18}
-                                    autoFocus={true}
-                                    // placeholder={STRCONSTANT.ENTER_OTP}
-                                    lineWidth={0}
-                                    activeLineWidth={0}
-                                    autoCapitalize='none'
-                                    autoCorrect={false}
-                                />
+                                <View style={styles.rightView}>
+                                    <TextInput
+                                        label=''
+                                        value={`${vehicleNo}`}
+                                        onChangeText={(vehicleNo) => this.setState({ vehicleNo })}
+                                        style={styles.textFieldStylesOwn}
+                                        labelFontSize={18}
+                                        autoFocus={true}
+                                        lineWidth={0}
+                                        activeLineWidth={0}
+                                        autoCapitalize='none'
+                                        autoCorrect={false}
+                                    />
+                                </View>
+                                
                             }
 
                         </View>
                         <View style={styles.menuContainer}>
-                            {/* <Text style={styles.menuTextLeft}>
-                                Contact
-                                </Text> */}
                             <Image style={styles.menuTextLeft} source={phoneNum} />
-                            {/* <Text style={styles.separator}>
-                                :
-                                </Text> */}
+                            
                             {
 
                                 (isContactVisible) ?
@@ -196,7 +179,6 @@ class DriverProfile extends Component {
                                         style={styles.textFieldStylesOwn}
                                         labelFontSize={18}
                                         autoFocus={true}
-                                        // placeholder={STRCONSTANT.ENTER_OTP}
                                         lineWidth={0}
                                         activeLineWidth={0}
                                         autoCapitalize='none'
@@ -208,12 +190,6 @@ class DriverProfile extends Component {
 
                         </View>
                         <View style={styles.menuContainerAddr}>
-                            {/* <Text style={styles.menuTextLeft}>
-                                Address
-                                </Text>
-                            <Text style={styles.separator}>
-                                :
-                                </Text> */}
                             <Image style={styles.menuTextLeft} source={location} />
                             {
                                 (isAddrVisible) ?
@@ -238,7 +214,6 @@ class DriverProfile extends Component {
                                         autoFocus={true}
                                         multiline={true}
                                         numberOfLines={3}
-                                    // placeholder={ STRCONSTANT.DRIVER_ADDRESS }
                                     />
                             }
 
@@ -248,7 +223,7 @@ class DriverProfile extends Component {
                                 (updateBtnVisible) ?
                                     <RaisedTextButton
                                         title={STRCONSTANT.UPDATE}
-                                        color={COLOR.BUTTON_COLOR}
+                                        color={COLOR.BUTTON_COLOR_DRIVER}
                                         titleColor={COLOR.BUTTON_FONT_COLOR}
                                         onPress={this.updateProfile}
                                         style={styles.updateBtn}
@@ -257,7 +232,7 @@ class DriverProfile extends Component {
                                     :
                                     <RaisedTextButton
                                         title={STRCONSTANT.UPDATE}
-                                        color={COLOR.BUTTON_COLOR}
+                                        color={COLOR.BUTTON_COLOR_DRIVER}
                                         titleColor={COLOR.BUTTON_FONT_COLOR}
                                         onPress={this.updateProfile}
                                         style={styles.updateBtn}
@@ -266,13 +241,7 @@ class DriverProfile extends Component {
                             }
                             
 
-                            {/* <RaisedTextButton
-                                title={STRCONSTANT.LOGOUT}
-                                color={COLOR.BUTTON_COLOR_CANCEL}
-                                titleColor={COLOR.BUTTON_FONT_COLOR_CANCEL}
-                                onPress={this.logoutProfile}
-                                style={styles.cancelStyle}
-                            /> */}
+                        
 
                         </View>
 
@@ -311,11 +280,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         flex: 1,
         width: wp('100%'),
-        height: hp('60%'),
+        height: hp('64%'),
     },
     fullName: {
         fontWeight: 'bold',
-        color: 'black',
+        color: '#fff',
         fontSize: 22
     },
 
@@ -341,8 +310,8 @@ const styles = StyleSheet.create({
     menuTextLeft: {
         // color: '#5b5a5a',
         // fontWeight: 'bold',
-        width: wp('10%'),
-        height: wp('10%'),
+        width: wp('11%'),
+        height: wp('11%'),
         marginLeft: 20,
         // marginRight: 20
         // fontSize: 16
@@ -361,8 +330,8 @@ const styles = StyleSheet.create({
     buttonSec: {
         bottom: 20,
         alignSelf: 'center',
-        position: 'absolute'
-        // marginBottom: 0
+        position: 'absolute',
+        marginBottom: 0
     },
     cancelStyle: {
         borderColor: '#f00',
@@ -385,7 +354,7 @@ const styles = StyleSheet.create({
         //marginTop: 15,
         borderWidth: 0,
         width: wp('60%'),
-        marginLeft: 50
+        marginLeft: wp('10%')
     },
     textAreaStyles: {
         borderRadius: 20,
@@ -396,7 +365,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         height: 85,
         width: wp('60%'),
-        marginLeft: 50
+        marginLeft: wp('10%')
     },
     separator: {
         marginRight: 15,

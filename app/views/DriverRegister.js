@@ -207,7 +207,7 @@ class DriverRegister extends Component {
                         />
                         <RaisedTextButton 
                             title={ STRCONSTANT.REG_BTN_TITLE } 
-                            color={ COLOR.BUTTON_COLOR }
+                            color={COLOR.BUTTON_COLOR_DRIVER}
                             titleColor = { COLOR.BUTTON_FONT_COLOR }
                             onPress = { () => this.registerDriver() }
                             style = { styles.buttonHelp }
@@ -227,14 +227,22 @@ class DriverRegister extends Component {
                     showConfirmButton={showConfirm}
                     cancelText="Cancel"
                     confirmText="Okay"
-					cancelButtonColor="rgb(29,115,99)"
+					// cancelButtonColor="rgb(29,115,99)"
 					onCancelPressed={() => {
 						this.hideAlert('error');
                     }}
                     onConfirmPressed={() => {
                         this.hideAlert('success');
                     }}
-
+                    cancelButtonColor="#1A3E50"
+                    confirmButtonColor = "#FFFFFF"
+                    contentContainerStyle = {{backgroundColor: COLOR.HEADER_BG_COLOR}}
+                    cancelButtonTextStyle = {{color: '#fff', fontSize: 15}}
+                    cancelButtonStyle = {{borderWidth: .5, borderColor: '#fff', width: wp('20%'), alignItems: 'center'}}
+                    messageStyle = {{color: '#fff'}}
+                    titleStyle = {{color: '#fff'}}
+                    confirmButtonStyle = {{borderWidth: .5, borderColor: '#165155', width: wp('20%'), alignItems: 'center'}}
+					confirmButtonTextStyle = {{color: '#165155', fontSize: 15}}
 				/>
 				<AppAlert
 					show={showAlertLoader}

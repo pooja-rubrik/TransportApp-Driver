@@ -17,7 +17,7 @@ const DriverAppStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      title: 'RUBRIK CAB',
+      title: 'Rubrik Cab',
       headerStyle: {
         backgroundColor: COLOR.HEADER_BG_COLOR,
       },
@@ -44,7 +44,7 @@ const AuthStack = createStackNavigator(
 
   }, {
   defaultNavigationOptions: {
-    title: 'RUBRIK CAB',
+    title: 'Rubrik Cab',
     headerStyle: {
       backgroundColor: COLOR.HEADER_BG_COLOR,
     },

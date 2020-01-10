@@ -3,6 +3,7 @@ import {
     Text, StyleSheet, TouchableOpacity,
     View, Image, Platform
 } from "react-native";
+import {toJS} from 'mobx';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CardView from 'react-native-cardview'
 import { RaisedTextButton } from 'react-native-material-buttons';
@@ -106,7 +107,7 @@ export class DriverEmployee extends React.PureComponent {
             buttonLabel: STRCONSTANT.DRIVER_START_TRIP,
             // isOTPOpen: false
         }
-        console.log(this.props)
+        console.log(toJS(this.props.employee))
     }
 
     expandCard = (isExpand, currId) => {
@@ -172,13 +173,13 @@ export class DriverEmployee extends React.PureComponent {
                             <View style={styles.cardAction}>
                                 <View style={styles.leftSec}>
                                     <Text style={[styles.cardText, styles.textPadTop]}>
-                                        {employee.empPhoneNumber}
+                                        {employee.empPhoneNumber ? employee.empPhoneNumber : 'No Contact'}
                                     </Text>
                                     <Text style={[styles.cardText, styles.textPadTop]}>
-                                        CHECK-IN: {employee.tripTime}
+                                        CHECK-IN: {employee.tripTime ? employee.tripTime : 'No CheckIn'}
                                     </Text>
                                     <Text style={[styles.cardText, styles.textPadTop]}>
-                                        PICK:          {employee.tripTime}
+                                        PICK         : {employee.pickupTime ? employee.pickupTime : 'No Pick'}
                                     </Text>
                                 </View>
                                 <View style={styles.rightSec}>
@@ -208,16 +209,16 @@ export class DriverEmployee extends React.PureComponent {
 
 const styles = StyleSheet.create({
     cardView: {
-        backgroundColor: '#94EBC5',
-        width: wp('98%'),
+        backgroundColor: '#fff',
+        width: wp('97%'),
         height: hp('5%'),
         alignSelf: 'center',
         marginTop: 5,
         borderRadius: 10
     },
     cardViewChange: {
-        backgroundColor: '#94EBC5',
-        width: wp('98%'),
+        backgroundColor: '#fff',
+        width: wp('97%'),
         // height: hp('15%'),
         alignSelf: 'center',
         marginTop: 5,
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
     },
     statusIcon: {
         height: 28,
-        width: 30,
+        width: 32,
         right: 0,
     },
     iconView: {
@@ -275,7 +276,8 @@ const styles = StyleSheet.create({
     },
     leftSec: {
         flexDirection: 'column',
-        paddingTop: 2
+        paddingTop: 2,
+        width: wp('46%')
     },
     textPadTop: {
         paddingTop: 2
@@ -291,11 +293,12 @@ const styles = StyleSheet.create({
         // marginBottom: 20,
         height: 18,
         marginTop: 15,
-        width: wp('48%'),
-        marginLeft: 60
+        width: wp('45%'),
+        // marginLeft: 60
     },
     rightSec: {
         // justifyContent: 'space-between'
+        width: wp('46%')
     },
     fontAddr: {
         fontSize: 14

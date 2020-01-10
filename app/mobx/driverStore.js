@@ -140,11 +140,11 @@ class DriverStore {
         this.driverData.empList.forEach(emp => {
             if (emp.empID.split(',').length > 1) {
                 emp.empID.split(',').forEach(empid => {
-                    this.driverData.empIds = this.driverData.empIds.concat({empId: empid, tripTime: emp.tripTime, type: emp.type, empBookStatus: emp.tripStatus});
+                    this.driverData.empIds = this.driverData.empIds.concat({empId: empid, tripTime: emp.tripTime, type: emp.type, empBookStatus: emp.tripStatus, pickupTime: emp.pickupTime});
                 })
                 
             } else {
-                this.driverData.empIds.push({empId: emp.empID, tripTime: emp.tripTime, type: emp.type, empBookStatus: emp.tripStatus});
+                this.driverData.empIds.push({empId: emp.empID, tripTime: emp.tripTime, type: emp.type, empBookStatus: emp.tripStatus, pickupTime: emp.pickupTime});
             }
         });
     }

@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import {
 	View, StyleSheet,
 	Image, TextInput, 
-	Platform
+	Platform, Text
 } from "react-native";
 import { RaisedTextButton } from 'react-native-material-buttons';
+import { Button } from 'react-native-paper';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 // import { Alert } from 'react-native';
 import { observer, inject } from "mobx-react";
@@ -163,18 +164,28 @@ class Login extends Component {
 						autoCorrect={false}
 					/>
 					{this.renderOTPInput()}
-					
-					<RaisedTextButton
+					<Button  
+						mode="contained" 
+						color={COLOR.BUTTON_COLOR_DRIVER}
+						style={styles.buttonHelp}
+						uppercase = {false}
+						onPress={this.driverSignIn}
+					>
+						<Text style={{color:"#fff", fontSize: 16}}>{signupText}</Text>
+						
+					</Button>
+					{/* <RaisedTextButton
 						title={signupText}
-						color={COLOR.BUTTON_COLOR}
+						color={COLOR.BUTTON_COLOR_DRIVER}
 						titleColor={COLOR.BUTTON_FONT_COLOR}
 						onPress={this.driverSignIn}
 						style={styles.buttonHelp}
 						titleStyle = {styles.titleStyle}
-					/>
+					/> */}
 					<RaisedTextButton
 						title={STRCONSTANT.DRIVER_REG_TITLE}
-						color={COLOR.BUTTON_COLOR}
+						// title = "signup with OTP"
+						color={COLOR.BUTTON_COLOR_DRIVER}
 						titleColor={COLOR.BUTTON_FONT_COLOR}
 						onPress={this.driverRegister}
 						style={styles.buttonHelp}
@@ -192,11 +203,15 @@ class Login extends Component {
 					closeOnHardwareBackPress={true}
 					showCancelButton={true}
 					cancelText="Cancel"
-					cancelButtonColor="rgb(29,115,99)"
+					cancelButtonColor="#1A3E50"
 					onCancelPressed={() => {
 						this.hideAlert('error');
 					}}
-
+					contentContainerStyle = {{backgroundColor: COLOR.HEADER_BG_COLOR}}
+                    cancelButtonTextStyle = {{color: '#fff', fontSize: 15}}
+					cancelButtonStyle = {{borderWidth: .5, borderColor: '#fff', width: wp('20%'), alignItems: 'center'}}
+					messageStyle = {{color: '#fff'}}
+					titleStyle = {{color: '#fff'}}
 				/>
 				<AppAlert
 					show={showAlertLoader}
@@ -238,12 +253,14 @@ const styles = StyleSheet.create({
 		// marginBottom: 20,
 		height: (deviceType == 'iphone') ? 38 : 50,
 		marginTop: 10,
-		fontSize: 18
+		fontSize: 18,
+		// textTransform: 'none'
 	},
 	titleStyle:{
-		fontSize: 18
+		fontSize: 18,
+		textTransform: 'capitalize'
 	}
-
+	//'none' | 'capitalize' | 'uppercase' | 'lowercase';
 })
 
 export default inject("rootStore")(observer(Login));

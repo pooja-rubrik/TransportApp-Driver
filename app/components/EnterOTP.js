@@ -97,24 +97,28 @@ const styles = StyleSheet.create({
     modalView: {
 		backgroundColor: COLOR.OTP_BG_COLOR,
 		padding: 20,
-		borderRadius: 5,
+		borderRadius: 10,
         height: hp('16%'),
         borderColor: COLOR.HEADER_BG_COLOR,
         borderWidth: .2,
         width: wp('45%'),
         alignSelf: 'center',
-        opacity: .95
+        opacity: .95,
+        borderColor: '#fff',
+        borderWidth: 1
     },
     modalViewIOS: {
 		backgroundColor: COLOR.OTP_BG_COLOR,
 		padding: 20,
-		borderRadius: 5,
+		borderRadius: 10,
         height: hp('15%'),
         borderColor: COLOR.HEADER_BG_COLOR,
         borderWidth: .2,
         width: wp('45%'),
         alignSelf: 'center',
-        opacity: .95
+        opacity: .95,
+        borderColor: '#fff',
+        borderWidth: 1
 	},
 	// closeText: {
 	// 	backgroundColor: COLOR.APP_BG_COLOR,

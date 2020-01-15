@@ -52,8 +52,8 @@ class Home extends Component {
 			timePlaceHolder: 'Select Time',
 			format: 'YYYY-MM-DD',
 			formatTime: 'HH:mm',
-			loginMinTime: this.utilities.loginTime.split('-')[0],
-			loginMaxTime: this.utilities.loginTime.split('-')[1],
+			loginMinTime: this.utilities.loginTime ? this.utilities.loginTime.split('-')[0] : 6,
+			loginMaxTime: this.utilities.loginTime ? this.utilities.loginTime.split('-')[1] : 12,
 			loginMin: 30,
 			showAlertError: false,
 			showAlertLoader: false,
@@ -171,7 +171,7 @@ class Home extends Component {
 				
 				console.log(toJS(this.usersStore.users.filterEmployees))
 				this.usersStore.users.filterEmployees.forEach(emp => {
-					if(emp.type == this.state.assignType) {
+					if(emp.type == type) {
 						console.log('found>>', emp.empHomeAddress)
 						this.markerArr.push(emp.empHomeAddress)
 					}
@@ -382,7 +382,8 @@ class Home extends Component {
 								futureDate = {1}
 								style = {styles.dateStyle}
 								iconStyle = {{left:5, height: 25, width: 25}}
-
+								placeholderTextStyle = {{color: COLOR.CARD_TXT_COLOR}}
+                            	dateTextStyle = {{color: COLOR.CARD_TXT_COLOR}}
 							/>
 							<DateTime 
 								date = {pickTimeValue} 
@@ -395,6 +396,8 @@ class Home extends Component {
 								minDate = {loginMinTime}
 								maxDate = {loginMaxTime}
 								minuteInterval={loginMin}
+								placeholderTextStyle = {{color: COLOR.CARD_TXT_COLOR}}
+                            	dateTextStyle = {{color: COLOR.CARD_TXT_COLOR}}
 							/>
 							<View style={(platform == "ios") ? styles.iconOuterIOS: styles.iconOuter}>
 								
@@ -480,14 +483,14 @@ const styles = StyleSheet.create({
     },
     dateinputStyle: {
         marginLeft:0, 
-        backgroundColor: '#fff', 
+        backgroundColor: COLOR.TAB_BG_COLOR, 
         paddingRight:20, 
         borderWidth: 0, 
         borderTopLeftRadius: 10, 
 	},
 	timeinputStyle: {
 		marginLeft:0, 
-        backgroundColor: '#fff', 
+        backgroundColor: COLOR.TAB_BG_COLOR, 
 		paddingRight:0, 
 		paddingLeft: 10,
         borderWidth: 0, 
@@ -507,23 +510,9 @@ const styles = StyleSheet.create({
         // top: hp('20%'),
 	}, 
 	
-	iconView: {
-		backgroundColor: '#F10005',
-		width: wp('6.5%'),
-		height: 24,
-		alignItems: 'center',
-		// paddingTop: 5,
-		borderWidth: 1,
-		borderColor: '#F10005',
-		borderRadius: 18,
-		padding:3.5,
-		paddingLeft: 4,
-		paddingRight:4,
-		marginTop:9,
-		marginLeft:3
-	},
+	
 	iconOuter: {
-		backgroundColor: '#fff',
+		backgroundColor: COLOR.TAB_BG_COLOR,
 		// borderBottomWidth: 1, 
 		// borderBottomColor: '#333',
 		// height: hp('5.3%'),
@@ -533,8 +522,9 @@ const styles = StyleSheet.create({
 		borderTopRightRadius: 10
 	}, 
 	iconOuterIOS: {
-		backgroundColor: '#fff',
+		backgroundColor: COLOR.TAB_BG_COLOR,
 		height: hp('4.93%'),
+		// height: hp('4.93%'),
 		width: wp('9%'),
 		padding:7,
         paddingTop:9,
@@ -547,9 +537,10 @@ const styles = StyleSheet.create({
 	},
 	checkInContainer: {
 		height: hp('5%'), 
-		backgroundColor: '#fff', 
+		backgroundColor: COLOR.TAB_BG_COLOR,
 		borderBottomLeftRadius: 10, 
-		borderBottomRightRadius: 10
+		borderBottomRightRadius: 10,
+		// marginTop: 5
 	}
 })
 export default inject("rootStore")(observer(Home));

@@ -97,13 +97,14 @@ class DriverProfile extends Component {
         let { isContactVisible, contact, isAddrVisible, address, updateBtnVisible, vehicleNo, isVehicleVisible } = this.state
         return (
             <Wallpapers>
-                <View style={styles.container}>
+                <View style={styles.userContainer}>
                     <Image style={styles.avtarStyle} source={avtarImg} />
                     <Text style={styles.fullName}>{this.driverData.driverName}</Text>
-                    <KeyboardAwareScrollView
-                        resetScrollToCoords={{ x: 0, y: 0 }}
-                        scrollEnabled={false}
-                    >
+                </View>
+                <KeyboardAwareScrollView
+                    resetScrollToCoords={{ x: 0, y: 0 }}
+                    scrollEnabled={false}
+                >
                     <View style={styles.contentSec}>
 
                         <View style={styles.menuContainer}>
@@ -126,12 +127,6 @@ class DriverProfile extends Component {
                                     <Text style={styles.menuTextRight}>
                                         {vehicleNo}
                                     </Text>
-                                    {/* <TouchableOpacity onPress={() => this.EditProfile('Vehicle')}>
-                                        <View style={styles.iconView}>
-                                            <MaterialIcons name="edit" size={19} color="#5b5a5a" />
-                                        </View>
-
-                                    </TouchableOpacity> */}
                                 </View>
 
                                 :
@@ -165,7 +160,7 @@ class DriverProfile extends Component {
                                         </Text>
                                         <TouchableOpacity onPress={() => this.EditProfile('Phone')}>
                                             <View style={styles.iconView}>
-                                                <MaterialIcons name="edit" size={19} color="#5b5a5a" />
+                                                <MaterialIcons name="edit" size={19} color="#333" />
                                             </View>
 
                                         </TouchableOpacity>
@@ -199,7 +194,7 @@ class DriverProfile extends Component {
                                         </Text>
                                         <TouchableOpacity onPress={() => this.EditProfile('Address')}>
                                             <View style={styles.iconView}>
-                                                <MaterialIcons name="edit" size={19} color="#5b5a5a" />
+                                                <MaterialIcons name="edit" size={19} color="#333" />
                                             </View>
 
                                         </TouchableOpacity>
@@ -228,6 +223,7 @@ class DriverProfile extends Component {
                                         onPress={this.updateProfile}
                                         style={styles.updateBtn}
                                         disabled = {false}
+                                        titleStyle = {styles.titleStyle}
                                     />
                                     :
                                     <RaisedTextButton
@@ -237,20 +233,12 @@ class DriverProfile extends Component {
                                         onPress={this.updateProfile}
                                         style={styles.updateBtn}
                                         disabled = {true}
+                                        titleStyle = {styles.titleStyle}
                                     />
                             }
-                            
-
-                        
-
                         </View>
-
-                        </View>
-                    </KeyboardAwareScrollView>
-                    
-
-                </View>
-
+                    </View>
+                </KeyboardAwareScrollView>
             </Wallpapers>
         );
 
@@ -260,27 +248,26 @@ class DriverProfile extends Component {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    userContainer: {
+        // flex: 1,
         alignItems: 'center',
-        height: 350,
+        height: hp('28%'),
+        backgroundColor: COLOR.CARD_BG_COLOR
     },
     icon: {
         paddingLeft: 10
     },
     avtarStyle: {
-        marginTop: 0,
-        height: wp('40%'),
-        width: wp('40%'),
+        height: wp('39.5%'),
+        width: wp('39.8%'),
         marginTop: 10,
         marginBottom: 10,
     },
     contentSec: {
-        backgroundColor: '#EFEEEE',
-        marginTop: 20,
-        flex: 1,
-        width: wp('100%'),
-        height: hp('64%'),
+        // flex: 1,
+        // backgroundColor: 'red'
+        // width: wp('100%'),
+        // height: hp('64%'),
     },
     fullName: {
         fontWeight: 'bold',
@@ -290,8 +277,8 @@ const styles = StyleSheet.create({
 
     menuContainer: {
         height: hp('8%'),
-        borderColor: '#9E9E9E',
-        borderBottomWidth: 2,
+        borderColor: '#333',
+        borderBottomWidth: .5,
         flexDirection: 'row',
         alignItems: 'center',
         width: wp('94%'),
@@ -300,8 +287,8 @@ const styles = StyleSheet.create({
     menuContainerAddr:{
         // height: hp('12%'),
         minHeight: hp('12%'),
-        borderColor: '#9E9E9E',
-        borderBottomWidth: 2,
+        borderColor: '#333',
+        borderBottomWidth: .5,
         flexDirection: 'row',
         alignItems: 'center',
         width: wp('94%'),
@@ -318,7 +305,7 @@ const styles = StyleSheet.create({
     },
     menuTextRight: {
         fontSize: 16,
-        color: '#5b5a5a',
+        color: '#333',
         fontWeight: 'bold',
         width: wp('70%'),
         paddingLeft: 50
@@ -328,10 +315,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     buttonSec: {
-        bottom: 20,
+        // bottom: 0,
+        marginTop: 100,
         alignSelf: 'center',
-        position: 'absolute',
-        marginBottom: 0
+        // position: 'relative',
+        // marginBottom: 0,
+        // flex:3
     },
     cancelStyle: {
         borderColor: '#f00',
@@ -367,13 +356,13 @@ const styles = StyleSheet.create({
         width: wp('60%'),
         marginLeft: wp('10%')
     },
-    separator: {
-        marginRight: 15,
-        width: wp('2%')
-    },
     iconView: {
         width: wp('5%')
-    }
+    },
+    titleStyle:{
+		fontSize: 18,
+		textTransform: 'capitalize'
+	}
 })
 
 export default inject("rootStore")(observer(DriverProfile));

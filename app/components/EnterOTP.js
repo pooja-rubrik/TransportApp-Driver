@@ -40,7 +40,7 @@ export default class EnterOTP extends React.PureComponent {
             visible={this.props.otpModalVisible}
         >
             <View>
-                <View style={platform == "ios"?styles.modalViewIOS:styles.modalView} >
+                <View style={platform == "ios" ? styles.modalViewIOS:styles.modalView} >
                     <View style={styles.TextInputView}>
                         <View>
                             <Text style={styles.headText}>

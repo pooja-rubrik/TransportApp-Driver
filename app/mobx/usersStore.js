@@ -139,14 +139,15 @@ class ObservableUsersStore {
             let employee = this.users.allemps.filter(emp => { return (emp.empID == empid.empId) });
             console.log('single>>',toJS(empid),toJS(employee[0]) );
             let empTemp = {};
-            empTemp.tripTime = empid.tripTime? moment(empid.tripTime, 'HH:mm:ss').format('HH:mm') : ''
+            empTemp.tripTime = empid.tripTime? moment(empid.tripTime, 'HH:mm:ss').format('HH:mm') : '';
+            empTemp.pickupTime = empid.pickupTime? moment(empid.pickupTime, 'HH:mm:ss').format('HH:mm') : ''
             empTemp.type = empid.type;
             empTemp.empBookStatus = empid.empBookStatus;
             empTemp.empName = employee[0].empName;
             empTemp.empPhoneNumber = employee[0].empPhoneNumber
             empTemp.empHomeAddress = employee[0].empHomeAddress;
             empTemp.empID = employee[0].empID;
-            empTemp.pickupTime = empid.pickupTime;
+            // empTemp.pickupTime = empid.pickupTime;
             empTempArr.push(empTemp)
             
             // console.log('emps>>>>', toJS(this.users.filterEmployees))

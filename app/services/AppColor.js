@@ -1,5 +1,5 @@
 export default {
-    HEADER_BG_COLOR: '#175454',
+    HEADER_BG_COLOR: '#9A9D9F',
     HEADER_FONT_COLOR: '#fff',
     BUTTON_COLOR: '#1D7263',
     BUTTON_FONT_COLOR: 'rgb(250,253,252)',
@@ -12,7 +12,11 @@ export default {
     BUTTON_COLOR_DRIVER: 'rgb(0, 157, 172)',
     BUTTON_FONT_COLOR_DRIVER: '#fff',
     BUTTON_COLOR_OTP: 'rgb(0, 157, 172)',
-    OTP_BG_COLOR: '#175454',
-    ACTIVE_TXT_COLOR: '#1D4E55',
-    HEADER_TXT_COLOR: '#175356'
+    OTP_BG_COLOR: '#9A9D9F',
+    ACTIVE_TXT_COLOR: '#00bacc',
+    INACTIVE_TXT_COLOR: '#fff',
+    HEADER_TXT_COLOR: '#fff',
+    CARD_BG_COLOR: '#022125',
+    TAB_BG_COLOR: '#022125',
+    CARD_TXT_COLOR: '#fff',
 }

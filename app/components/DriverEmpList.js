@@ -34,7 +34,9 @@ export default class DriverEmpList extends React.PureComponent {
         console.log(this.props)
     }
 
-
+    componentWillReceiveProps() {
+        console.log('empdata>>',toJS(this.props.empData), this.props.assignType)
+    }
 
     tripAction = (action, empID, isOTPOpen) => {
         if (action == STRCONSTANT.DRIVER_START_TRIP) {
@@ -57,24 +59,31 @@ export default class DriverEmpList extends React.PureComponent {
     render() {
         let { otpModalVisible } = this.state;
         let { empData, assignType } = this.props;
-        
-        empList = empData.length != 0 ?
-            empData.map((employee, index) => {
+        empList = []
+        empData.map((employee, index)=>{
             employee.show = 0;
-                return (
-                    (assignType == employee.type) ?
-                        <DriverEmployee employee={employee} tripAction={this.tripAction} key={index} />
-                        // <Text style = {{height: hp('25%')}}>{employee.empName}</Text>
-                        :
-                        null
-                )
-            }) :
-           null
-           
+            // console.log(assignType, employee.type)
+            if (assignType == employee.type) {
+                empList.push(<DriverEmployee employee={employee} tripAction={this.tripAction} key={index} />)    
+            }
+        })
+        
+        // empList = empData.length != 0 ?
+        //     empData.map((employee, index) => {
+        //     employee.show = 0;
+        //     if (assignType == employee.type) {
+        //         return (
+        //             <DriverEmployee employee={employee} tripAction={this.tripAction} key={index} />
+        //         )
+        //     }
+        //     }) :
+        //    null
+           console.log('empList>>>',empList)
         return (
             <View>
-                
-                {(empList == null || empList[0] == null)? 
+
+                {/* {(empList == null || empList[0] == null)? >>>>>do check */}
+                {(empList.length == 0)? 
                     <CardView
                         cardElevation={4}
                         cardMaxElevation={4}
@@ -209,7 +218,7 @@ export class DriverEmployee extends React.PureComponent {
 
 const styles = StyleSheet.create({
     cardView: {
-        backgroundColor: '#fff',
+        backgroundColor: COLOR.CARD_BG_COLOR,
         width: wp('97%'),
         height: hp('5%'),
         alignSelf: 'center',
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     cardViewChange: {
-        backgroundColor: '#fff',
+        backgroundColor: COLOR.CARD_BG_COLOR,
         width: wp('97%'),
         // height: hp('15%'),
         alignSelf: 'center',
@@ -228,11 +237,12 @@ const styles = StyleSheet.create({
     cardHead: {
         paddingLeft: 10,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        
     },
     statusIcon: {
         height: 28,
-        width: 32,
+        width: 34,
         right: 0,
     },
     iconView: {
@@ -248,13 +258,13 @@ const styles = StyleSheet.create({
     headTextIOS: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#375346',
+        color: COLOR.HEADER_TXT_COLOR,
         paddingTop: 10,
     },
     headText: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#375346',
+        color: COLOR.HEADER_TXT_COLOR,
         paddingTop: 6,
         paddingBottom: 6
     },
@@ -269,10 +279,11 @@ const styles = StyleSheet.create({
     cardTextAddr: {
         borderBottomWidth: .5,
         borderBottomColor: '#9A9C9B',
-
+        paddingTop:5,
+        paddingBottom: 5
     },
     cardText: {
-        color: '#406353'
+        color: COLOR.CARD_TXT_COLOR
     },
     leftSec: {
         flexDirection: 'column',

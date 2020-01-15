@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         // flex: 1
         flexDirection: 'row',
         height: hp('4.3%'),
-        backgroundColor: '#F9F9F9'
+        backgroundColor: Color.TAB_BG_COLOR
     },
     
     singleTab: {
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     },
     tabTextStyle : {
         fontSize: 13,
-        color: '#676767'
+        color: Color.INACTIVE_TXT_COLOR
     },
     activeTextStyle: {
         color: Color.ACTIVE_TXT_COLOR,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     },
     inActiveTab: {
         borderBottomWidth: 0 ,
-        borderBottomColor: '#fff'
+        borderBottomColor: Color.TAB_BG_COLOR
     }
 
 })

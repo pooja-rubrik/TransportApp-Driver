@@ -89,7 +89,11 @@ export default class DateTime extends React.PureComponent {
                     ...this.props.inputStyle
                 },
                 placeholderText: {
-                    color: '#6a6a6a'
+                    color: '#6a6a6a',
+                    ...this.props.placeholderTextStyle
+                },
+                dateText: {
+                    ...this.props.dateTextStyle
                 }
                 // ... You can check the source to find the other keys.
                 }}

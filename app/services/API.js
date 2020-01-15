@@ -1,7 +1,7 @@
 
 const base_url = {
-    API_URL: 'http://10.0.7.127:8050', 
-
+    // API_URL: 'http://10.0.7.127:8050', 
+    API_URL: 'https://apitest1.rubrik.com/cab'
 };
 export {base_url};
 

@@ -21,10 +21,10 @@ class UsersService {
         return res.body;
     }
 
-    registerDriver = async (driverParam) => {
+    registerDriver = async (driverParam, apiAction) => {
         console.log('param>>', driverParam)
         apiURL = api.get_driver;
-        const res = await ApiService.apiCall(apiURL, 'POST', driverParam);
+        const res = await ApiService.apiCall(apiURL, 'POST', driverParam, apiAction);
         ApiService.handleCommonError(res);
         console.log('res registerDriver>>>>', res)
         return res.body;

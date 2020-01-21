@@ -33,7 +33,8 @@ const api = {
     driver_login_otp: '/driver/login/validate',
     driver_login_send_otp: '/driver/login',
     driver_start_trip: '/daily/login/starttrip',
-    driver_end_trip: '/daily/login/endtrip'
+    driver_end_trip: '/daily/login/endtrip',
+    token_generate_url: 'https://apitest1.rubrik.com/v1/oauth2/token'
 }
 
 export default api;

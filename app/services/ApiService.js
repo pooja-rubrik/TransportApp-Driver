@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { isAuthenticated, refreshTokens } from '@okta/okta-react-native';
-
+// import { isAuthenticated, refreshTokens } from '@okta/okta-react-native';
+import api from './API';
+import StorageService from '../services/StorageService';
+import Constants from '../services/Constants';
 import {base_url} from './API'
 
 /**
@@ -17,14 +19,14 @@ class ApiService {
      * Service function to avoid repetition of fetch everywhere
      * @param {string} url - url to fetch
      * @param {string} method - method get or post
-     * @param {string|boolean} token  - authentication token
+     * @param {string|boolean} apiAction  - authentication apiAction for get token
      * @param {object|null} params - params payload
      */
-    apiCall = async ( url, method = 'GET', params = null, token ) => {
-        console.log('call URL>>>', `${base_url.API_URL}${url}`, token);
+    apiCall = async ( url, method = 'GET', params = null, apiAction ) => {
+        console.log('call URL>>>', `${base_url.API_URL}${url}`, apiAction);
         try {
-            if(token){
-                this.buildHeaders(token);
+            if(apiAction == 'login'){
+                await this.buildHeaders();
             }
             
             const res  = await axios({
@@ -48,18 +50,54 @@ class ApiService {
     }
 
     
-    buildHeaders = ( token = false ) => {
-        isAuthenticated().then( (auth) => {
-            if( auth.authenticated ) {
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            } else {
-                refreshTokens().then( (token) => {
-                    console.log('refreshed token', token)
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${token.access_token}`;
-                })
-            }
-        
+    buildHeaders = async (  ) => {
+        // console.log(token)
+        return new Promise((resolve, reject) => {
+            this.getTokenFromAPI().then( (data) => {
+                console.log('get token res>>>', data.body.access_token)
+                if(data.status == 200 && data.body.access_token) {
+                    StorageService.storeData('oAuthHeader', data.body.access_token);
+                    this.addHeader(data.body.access_token)
+                    console.log('header add check>>');
+                    resolve(true);
+                }
+            }, error => {
+                reject(false);
+                console.log('error getting token');
+            });
+            
         })
+       
+    }
+
+    getTokenFromAPI = async () => {
+        tokenAPIURL = `${api.token_generate_url}`;
+        param = Constants.AUTH;
+                // oktaToken
+        console.log( 'token url>>>>>>>>', tokenAPIURL );
+        try {
+            const res  = await axios({
+                method: 'POST',
+                url: tokenAPIURL,
+                data: param
+            })
+            console.log(res)
+            const status = res.status;
+            const body = res.data;
+            return { status, body };
+        } catch(error) {
+            console.log('error>>>', error)
+            console.log( error.response)
+            const status = error.response.status;
+            const body = error.response.data;
+            return { status, body };
+        }
+    }
+
+    addHeader = ( token ) => {
+        console.log('add header>>', token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        // axios.defaults.headers.common['oktaToken'] = oktaToken;
     }
 
     removeHeader = () => {

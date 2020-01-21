@@ -322,8 +322,8 @@ class Home extends Component {
 		this.empPageAction(this.state.assignType, this.state.pickDateValue, '');
 	}
 
-	confirmBtnAlert = () => {
-		console.log('data>>', data)
+	confirmBtnAlert = (action) => {
+		console.log('action>>', action)
 		this.hideAlert('confirm');
 	}
 	

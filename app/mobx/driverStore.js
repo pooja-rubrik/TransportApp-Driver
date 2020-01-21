@@ -37,7 +37,7 @@ class DriverStore {
         try {
             this.isLoading = true;
             console.log('vehicleNo>>', vehicleNo);
-            data = await DriverService.driverLoginSendOTP(vehicleNo)
+            data = await DriverService.driverLoginSendOTP(vehicleNo, 'login')
             runInAction(() => {
                 this.isLoading = false;
                 console.log('is driver otp sent>>', data)

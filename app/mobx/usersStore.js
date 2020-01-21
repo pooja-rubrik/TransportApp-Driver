@@ -117,7 +117,7 @@ class ObservableUsersStore {
         
             this.isLoading = true;
             let regParam = { driverAddress: regData.address, driverName:regData.firstName, driverPhone: regData.phoneNo, licenseNumber: regData.license, vehicleNumber: regData.vehicleNo  }
-            data = await UsersService.registerDriver( regParam )
+            data = await UsersService.registerDriver( regParam, 'login' )
             runInAction( () => {
                 this.isLoading = false;
                 console.log('driver register>>', data)

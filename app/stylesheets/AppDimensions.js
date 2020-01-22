@@ -42,6 +42,7 @@ export default {
   LOGO_WIDTH: deviceWidth * 0.4,
   CONTAINER_LOGIN_MARGINLEFT: deviceWidth * 0.15,
   CONTAINER_LOGIN_MARGINRIGHT: deviceWidth * 0.15,
+  HEIGHT_VARIATION: 610,
 
   //FONT SIZES//
   font_username: scaledSize(15),

@@ -20,6 +20,10 @@ import license from '../assets/icons/badge.png';
 import vehicleNum from '../assets/icons/car.png'
 import phoneNum from '../assets/icons/phone.png'
 import location from '../assets/icons/location.png'
+import  deviceInfo  from '../stylesheets/AppDimensions';
+const platform = Platform.OS;
+const screenHgt = deviceInfo.DEVICE_HEIGHT;
+const hightVariation = deviceInfo.HEIGHT_VARIATION
 
 class DriverProfile extends Component {
     constructor(props) {
@@ -252,19 +256,20 @@ const styles = StyleSheet.create({
         // flex: 1,
         alignItems: 'center',
         height: hp('28%'),
-        backgroundColor: COLOR.CARD_BG_COLOR
+        backgroundColor: COLOR.CARD_BG_COLOR,
+        // marginBottom: screenHgt >= hightVariation ? 0 : 50
     },
     icon: {
         paddingLeft: 10
     },
     avtarStyle: {
-        height: wp('39.5%'),
-        width: wp('39.8%'),
+        height: wp('35.5%'),
+        width: wp('35.8%'),
         marginTop: 10,
-        marginBottom: 10,
+        marginBottom: screenHgt >= hightVariation ? 10 : 0,
     },
     contentSec: {
-        // flex: 1,
+        flex: 1,
         // backgroundColor: 'red'
         // width: wp('100%'),
         // height: hp('64%'),
@@ -316,7 +321,7 @@ const styles = StyleSheet.create({
     },
     buttonSec: {
         // bottom: 0,
-        marginTop: 100,
+        marginTop: screenHgt >= hightVariation ? 100 : 70,
         alignSelf: 'center',
         // position: 'relative',
         // marginBottom: 0,

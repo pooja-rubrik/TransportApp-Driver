@@ -8,19 +8,39 @@ import SplashScreen from 'react-native-splash-screen';
 
 import RootStore, { Provider } from './app/mobx/store';
 import RootNavigator from './app/RootNavigator';
+import ApiService from './app/services/ApiService';
+import StorageService from './app/services/StorageService';
 
 const rootStore = new RootStore();
 
-// const AppContainer = createAppContainer(RootNavigator);
-
 class App extends Component {
 
-	async componentDidMount() {
+	async componentWillMount() {
 		console.log('component mounted>>>>API', rootStore.mapStore.mapData.currentAPIKey );
     SplashScreen.hide();
+    await StorageService.retrieveData('oAuthHeader').then( data => {
+      if(data) {
+        console.log('usertoken22>>>>',JSON.parse(data));
+        ApiService.addHeader(JSON.parse(data))
+      }
+      
+    })
     // Geocoder.init(rootStore.mapStore.mapData.currentAPIKey);
-     await rootStore.usersStore.getAllEmployee();
-     await rootStore.usersStore.getUtility();
+    StorageService.retrieveData('driver_data').then( data => {
+        // console.log('users_dataaaa>>', data);
+        const vehicleNo = data ? JSON.parse(data).vehicleNumber : '';
+      
+        console.log('vehicleNo>>',vehicleNo);
+        // This will switch to the App screen or Auth screen and this loading
+        // screen will be unmounted and thrown away.
+        if( vehicleNo ) {
+          (async () => {
+            await rootStore.usersStore.getAllEmployee();
+            await rootStore.usersStore.getUtility();
+          })();
+        }
+    });
+    
 	}
 
   onCLose = () => {
@@ -29,11 +49,11 @@ class App extends Component {
 
   render() {
       return (
-    <Provider 
-      rootStore={rootStore}
-    >
-      <RootNavigator />
-    </Provider>
+      <Provider 
+        rootStore={rootStore}
+      >
+        <RootNavigator />
+      </Provider>
       );
   }
 }

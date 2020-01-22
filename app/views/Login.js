@@ -16,12 +16,17 @@ import logo from '../assets/icons/logorubrik.png';
 import COLOR from '../services/AppColor';
 import STRCONSTANT from '../services/StringConstants';
 import { deviceType } from '../stylesheets/AppDimensions';
+import  deviceInfo  from '../stylesheets/AppDimensions';
+
 const platform = Platform.OS;
+const screenHgt = deviceInfo.DEVICE_HEIGHT;
+const hightVariation = deviceInfo.HEIGHT_VARIATION
 
 class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.driverStore = this.props.rootStore.driverStore;
+		this.usersStore = this.props.rootStore.usersStore;
 	}
 
 	state = {
@@ -74,10 +79,9 @@ class Login extends Component {
 					this.hideAlert('loader')
 					console.log('login data',this.driverStore.driverData)
 					if( this.driverStore.driverData.code == 200 ) {
-						// this.setState({vehicleNo: '', enterOTP: '', showOTPInput: false}, () =>
+						this.usersStore.getUtility().then(() => {
 							this.props.navigation.navigate('HomeScreen')
-						// )
-						
+						});
 						
 					} else {
 						this.setState({ errorText: this.driverStore.driverData.message? this.driverStore.driverData.message: 'Something went wrong'})
@@ -230,23 +234,23 @@ const styles = StyleSheet.create({
 
 	logoStyles: {
 		alignSelf: 'center',
-		width: wp('45%'),
-		height: hp('34%')
+		width: wp('38%'),
+		height: wp('38%')
 	},
 	textFieldStylesOwn: {
 		backgroundColor: 'white',
 		paddingLeft: 10,
-		height: hp('5%'),
+		height: platform == 'ios'? hp('5%'): screenHgt >= hightVariation ? hp('5.5%') : hp('5.9%'),
 		borderRadius: 20,
 		marginTop: 10,
 		borderWidth: 0,
-		fontSize: platform == 'ios'?18: 14
+		fontSize: platform == 'ios'?18: screenHgt >= hightVariation ? 14: 12
 	},
 	TextInputView: {
 		width: wp('95%'),
 		// height: hp('20%'),
 		alignSelf: 'center',
-		marginTop: -20
+		marginTop: platform == 'ios'?-20 : 0
 	},
 	buttonHelp: {
 		borderRadius: 20,

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
 	ScrollView, StyleSheet,
 	Platform, View, Image,
-	TouchableOpacity
+	TouchableOpacity, Text
 } from "react-native";
 import { observer, inject } from "mobx-react";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -26,8 +26,11 @@ import { AppAlert } from '../components/Alert';
 import DriverEmpList from '../components/DriverEmpList';
 import cancelTime from '../assets/icons/cancel.png'
 import COLOR from '../services/AppColor';
+import  deviceInfo  from '../stylesheets/AppDimensions';
 
 const platform = Platform.OS;
+const screenHgt = deviceInfo.DEVICE_HEIGHT;
+const hightVariation = deviceInfo.HEIGHT_VARIATION
 const timeout = 2000;
 let animationTimeout;
 
@@ -52,8 +55,8 @@ class Home extends Component {
 			timePlaceHolder: 'Select Time',
 			format: 'YYYY-MM-DD',
 			formatTime: 'HH:mm',
-			loginMinTime: this.utilities.loginTime ? this.utilities.loginTime.split('-')[0] : 6,
-			loginMaxTime: this.utilities.loginTime ? this.utilities.loginTime.split('-')[1] : 12,
+			loginMinTime: this.usersStore.utilities.loginTime ? this.usersStore.utilities.loginTime.split('-')[0] : 6,
+			loginMaxTime: this.usersStore.utilities.loginTime ? this.usersStore.utilities.loginTime.split('-')[1] : 12,
 			loginMin: 30,
 			showAlertError: false,
 			showAlertLoader: false,
@@ -100,7 +103,7 @@ class Home extends Component {
         
         this.callHomeData();
 		
-		// console.log(toJS(this.usersStore.users))
+		console.log(deviceInfo.DEVICE_HEIGHT)
     }
 
     componentWillUnmount() {
@@ -250,8 +253,8 @@ class Home extends Component {
     tabSwitch = (tab) => {
 		this.setState({
 			checkInTabVisible: (tab=='checkin') ? true : false,
-			loginMinTime: (tab=='checkin') ? this.utilities.loginTime.split('-')[0] : this.utilities.logoutTime.split('-')[0],
-			loginMaxTime: (tab=='checkin') ? this.utilities.loginTime.split('-')[1] : this.utilities.logoutTime.split('-')[1]
+			loginMinTime: (tab=='checkin') ? this.usersStore.utilities.loginTime.split('-')[0] : this.usersStore.utilities.logoutTime.split('-')[0],
+			loginMaxTime: (tab=='checkin') ? this.usersStore.utilities.loginTime.split('-')[1] : this.usersStore.utilities.logoutTime.split('-')[1]
 		})
 		if(tab == 'checkin'){
 			this.empPageAction('LOGIN', this.state.pickDateValue, this.state.pickTimeValue);
@@ -348,6 +351,7 @@ class Home extends Component {
         return (
             <View style={styles.mainContainer}>
 				{/* <CheckInTab checkInTabVisible = {checkInTabVisible} tabSwitch = {this.tabSwitch}/> */}
+				{/* <Text>{deviceInfo.DEVICE_HEIGHT}</Text> */}
 				<ScrollView>
 				<View style={styles.mapContainer}>
 						<MapView
@@ -467,19 +471,20 @@ const styles = StyleSheet.create({
         width: wp('97%'),
 		alignSelf: 'center',
 		borderRadius: 10,
-		height: hp('20%'),
+		height: platform == 'ios'? hp('20%'): hp('22%'),
 		overflow: 'hidden',
 		marginBottom: 5
 	},
 	map: {
-		height: hp('20%'),
+		height: platform == 'ios'? hp('20%'): hp('22%'),
 	},
     filterSection: {
         // flex:1,
         flexDirection:'row',
         
         backgroundColor: COLOR.HEADER_BG_COLOR,
-        height: hp('5.3%')
+		height:  screenHgt >= hightVariation ? hp('5.3%') : hp('5%'),
+		marginBottom: screenHgt >= hightVariation ? 0 : 6,
     },
     dateinputStyle: {
         marginLeft:0, 
@@ -515,7 +520,7 @@ const styles = StyleSheet.create({
 		backgroundColor: COLOR.TAB_BG_COLOR,
 		// borderBottomWidth: 1, 
 		// borderBottomColor: '#333',
-		// height: hp('5.3%'),
+		height: screenHgt >= hightVariation ? hp('5.44%'): hp('6.7%'),
 		width: wp('9%'),
 		padding:7,
 		paddingTop:9,
@@ -536,11 +541,11 @@ const styles = StyleSheet.create({
 		width: wp('5.5%')
 	},
 	checkInContainer: {
-		height: hp('5%'), 
+		height: screenHgt >= hightVariation ? hp('5%') : hp('5.5%'), 
 		backgroundColor: COLOR.TAB_BG_COLOR,
 		borderBottomLeftRadius: 10, 
 		borderBottomRightRadius: 10,
-		// marginTop: 5
+		marginTop: screenHgt >= hightVariation ? 4 : 7
 	}
 })
 export default inject("rootStore")(observer(Home));

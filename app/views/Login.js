@@ -61,7 +61,13 @@ class Login extends Component {
 				// this.showAlert('loader')
 				this.driverStore.driverLoginSendOTP(this.state.vehicleNo).then(()=>{
 					console.log(this.driverStore.driverData.otpStatus);
-					this.setState({ showOTPInput: true, signupText: STRCONSTANT.DRIVER_LOGIN_AFTER_OTP })
+					if( this.driverStore.driverData.otpStatus.code == 200 ) {
+						this.setState({ showOTPInput: true, signupText: STRCONSTANT.DRIVER_LOGIN_AFTER_OTP })
+					} else {
+						this.setState({ errorText: this.driverStore.driverData.otpStatus.message? this.driverStore.driverData.otpStatus.message: 'Something went wrong'})
+						this.showAlert('error')
+					}
+					
 				})
 				
 			} else {
@@ -75,12 +81,14 @@ class Login extends Component {
 			if (this.state.vehicleNo.trim() != '' && this.state.enterOTP.trim() != '') {
 				
 				this.showAlert('loader')
-				this.driverStore.driverLoginWithOTP(this.state.vehicleNo, this.state.enterOTP).then(()=>{
+				this.driverStore.driverLoginWithOTP( this.state.vehicleNo, this.state.enterOTP ).then(()=>{
 					this.hideAlert('loader')
 					console.log('login data',this.driverStore.driverData)
 					if( this.driverStore.driverData.code == 200 ) {
-						this.usersStore.getUtility().then(() => {
-							this.props.navigation.navigate('HomeScreen')
+						this.usersStore.getAllEmployee().then( () => {
+							this.usersStore.getUtility().then( () => {
+								this.props.navigation.navigate('HomeScreen')
+							});
 						});
 						
 					} else {
@@ -144,6 +152,14 @@ class Login extends Component {
 		}
 	}
 	
+	// componentWillUnmount () {
+	// 	console.log('unmount');
+	// 	this.setState({vehicleNo: '',enterOTP: '' })
+	// }
+
+	vehicleNoRemSpace = (vehicleNo) => {
+        this.setState({'vehicleNo': vehicleNo.replace(/\s/g, '')})
+    }
 	
 	render() {
 		console.disableYellowBox = true;
@@ -151,79 +167,84 @@ class Login extends Component {
 
 		return (
 			<Wallpapers>
-				<Image style={styles.logoStyles} source={logo} />
-				<View style={styles.TextInputView}>
-					<TextInput
-						label=''
-						value={`${vehicleNo}`}
-						onChangeText={(vehicleNo) => this.setState({ vehicleNo })}
-						style={styles.textFieldStylesOwn}
-						labelFontSize={0}
-						autoFocus={true}
-						placeholder={STRCONSTANT.VEHICLEINPUT}
-						placeholderTextColor={COLOR.PLACEHOLDER}
-						lineWidth={0}
-						activeLineWidth={0}
-						autoCapitalize='none'
-						autoCorrect={false}
+				{/* <View style={{position: 'relative'}}> */}
+					<Image style={styles.logoStyles} source={logo} />
+					<View style={styles.TextInputView}>
+						<TextInput
+							label=''
+							value={`${vehicleNo}`}
+							onChangeText={(vehicleNo) => this.vehicleNoRemSpace(vehicleNo)}
+							style={styles.textFieldStylesOwn}
+							labelFontSize={0}
+							autoFocus={true}
+							placeholder={STRCONSTANT.VEHICLEINPUT}
+							placeholderTextColor={COLOR.PLACEHOLDER}
+							lineWidth={0}
+							activeLineWidth={0}
+							autoCapitalize='characters'
+							autoCorrect={false}
+						/>
+						{this.renderOTPInput()}
+						<Button  
+							mode="contained" 
+							color={COLOR.BUTTON_COLOR_DRIVER}
+							style={styles.buttonHelp}
+							uppercase = {false}
+							onPress={this.driverSignIn}
+						>
+							<Text style={{color:"#fff", fontSize: 16}}>{signupText}</Text>
+							
+						</Button>
+						{/* <RaisedTextButton
+							title={signupText}
+							color={COLOR.BUTTON_COLOR_DRIVER}
+							titleColor={COLOR.BUTTON_FONT_COLOR}
+							onPress={this.driverSignIn}
+							style={styles.buttonHelp}
+							titleStyle = {styles.titleStyle}
+						/> */}
+						<RaisedTextButton
+							title={STRCONSTANT.DRIVER_REG_TITLE}
+							// title = "signup with OTP"
+							color={COLOR.BUTTON_COLOR_DRIVER}
+							titleColor={COLOR.BUTTON_FONT_COLOR}
+							onPress={this.driverRegister}
+							style={styles.buttonHelp}
+							titleStyle = {styles.titleStyle}
+						/>
+							
+					</View>
+					
+					<AppAlert
+						show={showAlertError}
+						showProgress={false}
+						title="Oops!"
+						message={errorText}
+						closeOnTouchOutside={true}
+						closeOnHardwareBackPress={true}
+						showCancelButton={true}
+						cancelText="Cancel"
+						cancelButtonColor="#1A3E50"
+						onCancelPressed={() => {
+							this.hideAlert('error');
+						}}
+						alertContainerStyle = {{zIndex: 999, position: 'absolute'}}
+						contentContainerStyle = {{backgroundColor: COLOR.HEADER_BG_COLOR, }}
+						cancelButtonTextStyle = {{color: '#fff', fontSize: 15}}
+						cancelButtonStyle = {{borderWidth: .5, borderColor: '#fff', width: wp('20%'), alignItems: 'center'}}
+						messageStyle = {{color: '#fff'}}
+						titleStyle = {{color: '#fff'}}
 					/>
-					{this.renderOTPInput()}
-					<Button  
-						mode="contained" 
-						color={COLOR.BUTTON_COLOR_DRIVER}
-						style={styles.buttonHelp}
-						uppercase = {false}
-						onPress={this.driverSignIn}
-					>
-						<Text style={{color:"#fff", fontSize: 16}}>{signupText}</Text>
-						
-					</Button>
-					{/* <RaisedTextButton
-						title={signupText}
-						color={COLOR.BUTTON_COLOR_DRIVER}
-						titleColor={COLOR.BUTTON_FONT_COLOR}
-						onPress={this.driverSignIn}
-						style={styles.buttonHelp}
-						titleStyle = {styles.titleStyle}
-					/> */}
-					<RaisedTextButton
-						title={STRCONSTANT.DRIVER_REG_TITLE}
-						// title = "signup with OTP"
-						color={COLOR.BUTTON_COLOR_DRIVER}
-						titleColor={COLOR.BUTTON_FONT_COLOR}
-						onPress={this.driverRegister}
-						style={styles.buttonHelp}
-						titleStyle = {styles.titleStyle}
+					<AppAlert
+						show={showAlertLoader}
+						showProgress={true}
+						title="Loading.."
+						closeOnTouchOutside={false}
+						closeOnHardwareBackPress={false}
+						alertContainerStyle = {{zIndex: 999, position: 'absolute'}}
 					/>
-						
-				</View>
+				{/* </View> */}
 				
-				<AppAlert
-					show={showAlertError}
-					showProgress={false}
-					title="Oops!"
-					message={errorText}
-					closeOnTouchOutside={true}
-					closeOnHardwareBackPress={true}
-					showCancelButton={true}
-					cancelText="Cancel"
-					cancelButtonColor="#1A3E50"
-					onCancelPressed={() => {
-						this.hideAlert('error');
-					}}
-					contentContainerStyle = {{backgroundColor: COLOR.HEADER_BG_COLOR}}
-                    cancelButtonTextStyle = {{color: '#fff', fontSize: 15}}
-					cancelButtonStyle = {{borderWidth: .5, borderColor: '#fff', width: wp('20%'), alignItems: 'center'}}
-					messageStyle = {{color: '#fff'}}
-					titleStyle = {{color: '#fff'}}
-				/>
-				<AppAlert
-					show={showAlertLoader}
-					showProgress={true}
-					title="Loading.."
-					closeOnTouchOutside={false}
-					closeOnHardwareBackPress={false}
-				/>
 			</Wallpapers>
 		);
 	}
@@ -235,7 +256,8 @@ const styles = StyleSheet.create({
 	logoStyles: {
 		alignSelf: 'center',
 		width: wp('38%'),
-		height: wp('38%')
+		height: wp('38%'),
+		marginTop: 20
 	},
 	textFieldStylesOwn: {
 		backgroundColor: 'white',
@@ -250,7 +272,8 @@ const styles = StyleSheet.create({
 		width: wp('95%'),
 		// height: hp('20%'),
 		alignSelf: 'center',
-		marginTop: platform == 'ios'?-20 : 0
+		marginTop: platform == 'ios'?-20 : 0,
+		zIndex: 99
 	},
 	buttonHelp: {
 		borderRadius: 20,
@@ -259,6 +282,8 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		fontSize: 18,
 		// textTransform: 'none'
+		overflow: 'visible',
+		//zIndex: 9
 	},
 	titleStyle:{
 		fontSize: 18,

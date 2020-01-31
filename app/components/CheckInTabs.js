@@ -13,7 +13,7 @@ export default class CheckInTab extends React.PureComponent {
         super(props);
     }
     tabSwitch = (type) => {
-        console.log('switch>>>', type)
+        // console.log('switch>>>', type)
         this.props.tabSwitch(type);
     }
 
@@ -25,7 +25,7 @@ export default class CheckInTab extends React.PureComponent {
                     <View style={checkInTabVisible ? [styles.singleTab, styles.activeTab]: [styles.singleTab, styles.inActiveTab]}>
                         
                         <Text style={checkInTabVisible ? [styles.tabTextStyle, styles.activeTextStyle]: [styles.tabTextStyle]}>
-                            CHECK-IN
+                            Check-In
                         </Text> 
                     </View>
                 </TouchableOpacity>
@@ -34,7 +34,7 @@ export default class CheckInTab extends React.PureComponent {
                     <View style={!checkInTabVisible ? [styles.singleTab, styles.activeTab]: [styles.singleTab, styles.inActiveTab]}>
                         
                         <Text style={!checkInTabVisible ? [styles.tabTextStyle, styles.activeTextStyle]: [styles.tabTextStyle]}>
-                            CHECK-OUT
+                            Check-Out
                         </Text>
                     
                     </View>

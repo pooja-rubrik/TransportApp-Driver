@@ -22,24 +22,28 @@ class App extends Component {
       if(data) {
         console.log('usertoken22>>>>',JSON.parse(data));
         ApiService.addHeader(JSON.parse(data))
+        // (async () => {
+        //   await rootStore.usersStore.getAllEmployee();
+        //   await rootStore.usersStore.getUtility();
+        // })();
       }
       
     })
     // Geocoder.init(rootStore.mapStore.mapData.currentAPIKey);
-    StorageService.retrieveData('driver_data').then( data => {
-        // console.log('users_dataaaa>>', data);
-        const vehicleNo = data ? JSON.parse(data).vehicleNumber : '';
+    // await StorageService.retrieveData('driver_data').then( data => {
+    //     // console.log('users_dataaaa>>', data);
+    //     const vehicleNo = data ? JSON.parse(data).vehicleNumber : '';
       
-        console.log('vehicleNo>>',vehicleNo);
-        // This will switch to the App screen or Auth screen and this loading
-        // screen will be unmounted and thrown away.
-        if( vehicleNo ) {
-          (async () => {
+    //     console.log('vehicleNo>>',vehicleNo);
+    //     // This will switch to the App screen or Auth screen and this loading
+    //     // screen will be unmounted and thrown away.
+    //     if( vehicleNo ) {
+          // (async () => {
             await rootStore.usersStore.getAllEmployee();
             await rootStore.usersStore.getUtility();
-          })();
-        }
-    });
+          // })();
+    //     }
+    // });
     
 	}
 

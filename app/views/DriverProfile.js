@@ -31,7 +31,7 @@ class DriverProfile extends Component {
         this.usersStore = this.props.rootStore.usersStore;
         this.driverStore = this.props.rootStore.driverStore;
         this.driverData = this.driverStore.driverData
-        console.log(toJS(this.driverData))
+        // console.log(toJS(this.driverData))
         this.state = {
             isVehicleVisible: true,
             isContactVisible: true,
@@ -79,11 +79,11 @@ class DriverProfile extends Component {
         driverParam.license = this.driverData.licenseNumber
         driverParam.address = this.state.address;
         this.usersStore.registerDriver(driverParam).then( () => {
-            console.log(this.usersStore.users.driverDetail);
+            // console.log(this.usersStore.users.driverDetail);
             if(this.usersStore.users.driverDetail.code == 200 || 201 ){
                 this.setState({ isContactVisible: true, isAddrVisible: true, isVehicleVisible: true, updateBtnVisible: false })
                 this.driverStore.setDriverData(driverParam.vehicleNo).then(() => {
-                    Alert.alert('Driver profile has updated.')
+                    Alert.alert('Driver profile has been updated.')
                 })
                 
             }
@@ -343,12 +343,13 @@ const styles = StyleSheet.create({
     textFieldStylesOwn: {
         backgroundColor: 'white',
         paddingLeft: 10,
-        height: hp('5%'),
+        height: platform == 'ios'? hp('5%'): screenHgt >= hightVariation ? hp('5.5%') : hp('5.9%'),
         borderRadius: 20,
         //marginTop: 15,
         borderWidth: 0,
         width: wp('60%'),
-        marginLeft: wp('10%')
+        marginLeft: wp('10%'),
+        fontSize: platform == 'ios'?18: screenHgt >= hightVariation ? 14: 12
     },
     textAreaStyles: {
         borderRadius: 20,
@@ -359,7 +360,8 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         height: 85,
         width: wp('60%'),
-        marginLeft: wp('10%')
+        marginLeft: wp('10%'),
+        fontSize: platform == 'ios'?18: screenHgt >= hightVariation ? 14: 12
     },
     iconView: {
         width: wp('5%')

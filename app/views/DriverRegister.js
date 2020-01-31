@@ -101,18 +101,20 @@ class DriverRegister extends Component {
             this.showAlert('loader')
             this.usersStore.registerDriver(this.state).then( () => {
                 this.hideAlert('loader')
-                console.log(this.usersStore.users.driverDetail);
+                // console.log(this.usersStore.users.driverDetail);
                 if(this.usersStore.users.driverDetail.code == 200 || this.usersStore.users.driverDetail.code == 201 ){
-                    this.driverStore.setDriverData(this.state.vehicleNo).then(() => {
-                        this.setState({ 
-                            errorText: 'Driver has registered successfully.', 
-                            alertTitle: 'Success!', 
-                            showCancel: false, 
-                            showConfirm: true
+                    this.usersStore.getAllEmployee();
+                    this.usersStore.getUtility().then(() => {
+                        this.driverStore.setDriverData(this.state.vehicleNo).then(() => {
+                            this.setState({ 
+                                errorText: 'Driver has registered successfully.', 
+                                alertTitle: 'Success!', 
+                                showCancel: false, 
+                                showConfirm: true
+                            })
+                            this.showAlert('error')
                         })
-                        this.showAlert('error')
                     })
-                    
                     // Alert.alert('Driver has registered successfully.')
                 } else {
                     if(this.usersStore.users.driverDetail.message){
@@ -129,6 +131,9 @@ class DriverRegister extends Component {
         }
     }
 
+    vehicleNoRemSpace = (vehicleNo) => {
+        this.setState({'vehicleNo': vehicleNo.replace(/\s/g, '')})
+    }
     
     render() {
         console.disableYellowBox = true;
@@ -170,7 +175,7 @@ class DriverRegister extends Component {
                         <TextInput
                             label=''
                             value={`${vehicleNo}`}
-                            onChangeText={(vehicleNo) => this.setState({ vehicleNo })}
+                            onChangeText={(vehicleNo) => this.vehicleNoRemSpace(vehicleNo)}
                             style={styles.textFieldStylesOwn}
                             labelFontSize={18}
                             autoFocus={true}
@@ -178,7 +183,7 @@ class DriverRegister extends Component {
                             placeholderTextColor={COLOR.PLACEHOLDER}
                             lineWidth={0}
                             activeLineWidth={0}
-                            autoCapitalize='none'
+                            autoCapitalize='characters'
                             autoCorrect={false}
                         />
                         <TextInput
@@ -192,8 +197,9 @@ class DriverRegister extends Component {
                             placeholderTextColor={COLOR.PLACEHOLDER}
                             lineWidth={0}
                             activeLineWidth={0}
-                            autoCapitalize='none'
+                            // autoCapitalize='none'
                             autoCorrect={false}
+                            // autoCapitalize = 'characters'
                         />
                         
                         
@@ -296,10 +302,12 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingTop: 10,
         height: 150,
-        fontSize: platform == 'ios'?18: 14
+        fontSize: platform == 'ios'?18: 14,
+        textAlignVertical: "top"
     },
 	titleStyle:{
-		fontSize: 18
+        fontSize: 18,
+        textTransform: 'capitalize'
 	}
 
 })

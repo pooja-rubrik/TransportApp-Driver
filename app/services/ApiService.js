@@ -41,9 +41,18 @@ class ApiService {
         } catch(error) {
             console.log('error>>>', error)
             console.log( error.response)
-            const status = error.response.status;
-            const body = error.response.data;
-            return { status, body };
+            if(error.response.data.error == 'invalid_token') {
+                (async () => {
+                    await this.buildHeaders();
+                    console.log('second call>>>')
+                    await this.apiCall(url, method, params )
+                })();
+                   
+            } else {
+                const status = error.response.status;
+                const body = error.response.data;
+                return { status, body };
+            }
         }
         
         
@@ -94,7 +103,7 @@ class ApiService {
         }
     }
 
-    addHeader = ( token ) => {
+    addHeader = async ( token ) => {
         console.log('add header>>', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         // axios.defaults.headers.common['oktaToken'] = oktaToken;

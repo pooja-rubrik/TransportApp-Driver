@@ -16,11 +16,12 @@ class DriverStore {
     @action async driverLoginWithOTP(vehicleNo, otp) {
         try {
             this.isLoading = true;
-            console.log('vehicleNo>>', vehicleNo, otp);
+            // console.log('vehicleNo>>', vehicleNo, otp);
+            this.driverData = {}
             data = await DriverService.driverLoginWithOTP(vehicleNo, otp)
             runInAction(() => {
                 this.isLoading = false;
-                console.log('is driver login>>', data)
+                // console.log('is driver login>>', data)
                 this.driverData = data;
                 StorageService.storeData('driver_data', toJS(this.driverData));
             })
@@ -36,7 +37,7 @@ class DriverStore {
     @action async driverLoginSendOTP(vehicleNo) {
         try {
             this.isLoading = true;
-            console.log('vehicleNo>>', vehicleNo);
+            // console.log('vehicleNo>>', vehicleNo);
             data = await DriverService.driverLoginSendOTP(vehicleNo, 'login')
             runInAction(() => {
                 this.isLoading = false;
@@ -45,7 +46,7 @@ class DriverStore {
             })
 
         } catch (e) {
-            console.log('error driver data', e)
+            // console.log('error driver data', e)
             runInAction(() => {
                 this.isLoading = false;
             })
@@ -55,11 +56,11 @@ class DriverStore {
     @action async setDriverData(vehicleNo) {
         try {
             this.isLoading = true;
-            console.log('vehicleNo>>', vehicleNo);
+            // console.log('vehicleNo>>', vehicleNo);
             data = await DriverService.getDriverDataByVehicleNo(vehicleNo)
             runInAction(() => {
                 this.isLoading = false;
-                console.log('is driver data>>', data)
+                // console.log('is driver data>>', data)
                 this.driverData = data;
                 StorageService.storeData('driver_data', toJS(this.driverData));
             })
@@ -75,11 +76,11 @@ class DriverStore {
     @action async getDriverEmp(empParam) {
         try {
             this.isLoading = true;
-            console.log('empParam>>', empParam);
+            // console.log('empParam>>', empParam);
             data = await DriverService.getDriverEmpListByDate(empParam)
             runInAction(() => {
                 this.isLoading = false;
-                console.log('driver emp data>>', JSON.stringify(data))
+                // console.log('driver emp data>>', JSON.stringify(data))
                 this.driverData.empList = data;
                 // this.driverData.empList = [
                 //     {
@@ -152,11 +153,12 @@ class DriverStore {
     @action async empTripAction(action, param) {
         try {
             this.isLoading = true;
-            console.log('action>>', action);
+            // console.log('action>>', action);
+            this.driverData.empTripStatus = {};
             data = await DriverService.empTripAction(action, param)
             runInAction(() => {
                 this.isLoading = false;
-                console.log('is employee otp sent>>', data)
+                // console.log('is employee otp sent>>', data)
                 this.driverData.empTripStatus = data;
             })
 

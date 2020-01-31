@@ -32,7 +32,7 @@ const platform = Platform.OS;
 const screenHgt = deviceInfo.DEVICE_HEIGHT;
 const hightVariation = deviceInfo.HEIGHT_VARIATION
 const timeout = 2000;
-let animationTimeout;
+let animationTimeout, dataDelay;
 
 class Home extends Component {
     constructor(props) {
@@ -61,7 +61,7 @@ class Home extends Component {
 			showAlertError: false,
 			showAlertLoader: false,
 			errorText: '',
-			alertTitle: 'Oops!',
+			alertTitle: 'Error!',
 			showConfirm: false,
             showCancel: true,
 			checkInTabVisible: true,
@@ -95,25 +95,31 @@ class Home extends Component {
     };
 
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.navigation.setParams({
 			handleMenu: this.navigateMenu,
 			logout: this.logoutProfile
         });
-        
+        this.markerArr = [];
         this.callHomeData();
 		
-		console.log(deviceInfo.DEVICE_HEIGHT)
+		//console.log(deviceInfo.DEVICE_HEIGHT)
     }
 
     componentWillUnmount() {
         if (animationTimeout) {
-          clearTimeout(animationTimeout);
-        }
+		  clearTimeout(animationTimeout);
+		}
+		if (dataDelay) {
+			clearTimeout(dataDelay);
+		}
+
 	}
 
 	callHomeData = () => {
-		this.empPageAction('LOGIN', this.state.pickDateValue );
+		// dataDelay = setTimeout(() => { //waiting for all employee data to store in db
+			this.empPageAction('LOGIN', this.state.pickDateValue );
+		// }, 500)
 	}
 
 	getMarkerLatLong() {
@@ -123,7 +129,7 @@ class Home extends Component {
             Geocoder.from(address)
 			.then(json => {
 				var location = json.results[0].geometry.location;
-				console.log('location>>>', json,location)
+				//console.log('location>>>', json,location)
 				//console.log(location);
                 this.mapStore.locateMap(location, 'driver', address);
                 // console.log(toJS(this.mapStore.driverMarkers))
@@ -131,12 +137,12 @@ class Home extends Component {
 			})
 			.catch(error => console.warn(error));
 		})
-		console.log('marker leng>>', this.markerArr.length)
+		//console.log('marker leng>>', this.markerArr.length)
 		if(this.markerArr.length == 0){
 			this.mapStore.locateMap(null, 'driver', null);
 		}
 		animationTimeout = setTimeout(() => {
-			console.log('zoom marker arr>>>', this.markerArr)
+			//console.log('zoom marker arr>>>', this.markerArr)
 			this.mapRef.fitToSuppliedMarkers(
 				this.markerArr,
 				{ 
@@ -164,7 +170,7 @@ class Home extends Component {
 			await this.driverStore.getDriverEmp(empParam);
 			if(this.driverStore.driverData.empList.length > 0) {
 				await this.driverStore.getEmpIDs();
-				console.log(toJS(this.driverStore.driverData.empIds))
+				//console.log(toJS(this.driverStore.driverData.empIds))
 				await this.usersStore.filterEmployee(this.driverStore.driverData.empIds);
 				this.setState({
 					assignType: type, 
@@ -172,16 +178,16 @@ class Home extends Component {
 					
 				})
 				
-				console.log(toJS(this.usersStore.users.filterEmployees))
+				//console.log(toJS(this.usersStore.users.filterEmployees))
 				this.usersStore.users.filterEmployees.forEach(emp => {
 					if(emp.type == type) {
-						console.log('found>>', emp.empHomeAddress)
+						//console.log('found>>', emp.empHomeAddress)
 						this.markerArr.push(emp.empHomeAddress)
 					}
 					
 				})
 				
-				console.log(this.markerArr);
+				//console.log(this.markerArr);
 				this.getMarkerLatLong();
 				
 			} else {
@@ -239,7 +245,9 @@ class Home extends Component {
 			//logic of logout
 			if(this.state.confirmAction == 'logout') {
 				StorageService.removeData('driver_data').then(data => {
-					this.props.navigation.navigate('LoginScreen');
+					StorageService.removeData('oAuthHeader').then(data => {
+						this.props.navigation.navigate('LoginScreen');
+					})
 				})
 			} 
             
@@ -276,13 +284,14 @@ class Home extends Component {
 	}
 
 	tripAction = (action, empID, otp = 0) => {
-		console.log('parent>>>',action, empID);
+		//console.log('parent>>>',action, empID);
+		this.setState({ errorText: ''})
 		let param = (action == STRCONSTANT.DRIVER_START_TRIP) ? {empId: empID, type: this.state.assignType, vehicleNumber: this.vehicleNo}:
 										{empId: empID, type: this.state.assignType, vehicleNumber: this.vehicleNo, otp: otp }
 
 		this.driverStore.empTripAction(action, param).then(() => {
-			console.log(this.driverStore.driverData.empTripStatus);
-			if(this.driverStore.driverData.empTripStatus.code == 200 ) {
+			// console.log(this.driverStore.driverData.empTripStatus);
+			if(this.driverStore.driverData.empTripStatus && this.driverStore.driverData.empTripStatus.code == 200 ) {
 				// this.setState({})
 				
 				if(action == STRCONSTANT.DRIVER_END_TRIP) {
@@ -302,11 +311,12 @@ class Home extends Component {
 				
 				
 			} else {
+				console.log('trip error>>>>>>', this.driverStore.driverData.empTripStatus);
 				this.setState({
 					empList: [],
 				})
 				this.empPageAction(this.state.assignType, this.state.pickDateValue, this.state.pickTimeValue);
-				if(this.driverStore.driverData.empTripStatus.message) {
+				if(this.driverStore.driverData.empTripStatus && this.driverStore.driverData.empTripStatus.message) {
 					this.setState({ errorText: this.driverStore.driverData.empTripStatus.message})
 					this.showAlert('error')
 				} else {
@@ -326,12 +336,12 @@ class Home extends Component {
 	}
 
 	confirmBtnAlert = (action) => {
-		console.log('action>>', action)
+		//console.log('action>>', action)
 		this.hideAlert('confirm');
 	}
 	
     render() {
-		console.disableYellowBox = true;
+		// console.disableYellowBox = true;
 		let {pickDateValue, timePlaceHolder, formatTime, format,
 			datePickerMode, datePlaceHolder, pickTimeValue, 
 			loginMinTime, loginMaxTime, loginMin,

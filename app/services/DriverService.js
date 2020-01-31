@@ -22,14 +22,14 @@ class DriverService {
 
     driverLoginWithOTP = async (vehicleNo, otp) => { //driver login with otp 
         apiURL = `${api.driver_login_otp}/${vehicleNo}/${otp}`;
-        const res = await ApiService.apiCall(apiURL, 'GET');
+        const res = await ApiService.apiCall(apiURL, 'GET', null);
         ApiService.handleCommonError(res);
         return res.body;
     }
 
     driverLoginSendOTP = async (vehicleNo, apiAction) => { //send otp in driver's phone
         apiURL = `${api.driver_login_send_otp}/${vehicleNo}`;
-        console.log(apiAction)
+        console.log(apiURL)
         const res = await ApiService.apiCall(apiURL, 'GET', null, apiAction);
         ApiService.handleCommonError(res);
         return res.body;

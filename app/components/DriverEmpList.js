@@ -13,8 +13,12 @@ import statusIconNotBook from '../assets/icons/cabnotbooked.png'
 import STRCONSTANT from '../services/StringConstants';
 import COLOR from '../services/AppColor';
 import EnterOTP from "./EnterOTP";
+import  deviceInfo  from '../stylesheets/AppDimensions';
 
 const platform = Platform.OS;
+const screenHgt = deviceInfo.DEVICE_HEIGHT;
+const hightVariation = deviceInfo.HEIGHT_VARIATION
+
 
 export default class DriverEmpList extends React.PureComponent {
 
@@ -31,11 +35,11 @@ export default class DriverEmpList extends React.PureComponent {
     }
 
     componentDidMount() {
-        console.log(this.props)
+       // console.log(this.props)
     }
 
     componentWillReceiveProps() {
-        console.log('empdata>>',toJS(this.props.empData), this.props.assignType)
+        // console.log('empdata>>',toJS(this.props.empData), this.props.assignType)
     }
 
     tripAction = (action, empID, isOTPOpen) => {
@@ -50,9 +54,13 @@ export default class DriverEmpList extends React.PureComponent {
     }
 
     submitOTP = (otpData) => {
-        console.log(otpData)
+        //console.log(otpData)
         this.setState({ otpModalVisible: false })
         this.props.tripAction(STRCONSTANT.DRIVER_END_TRIP, this.state.currEndTripEmp, otpData.enterOTP);
+    }
+
+    componentWillUnmount() {
+        console.log('unmount called>>>>>')
     }
 
 
@@ -67,18 +75,7 @@ export default class DriverEmpList extends React.PureComponent {
                 empList.push(<DriverEmployee employee={employee} tripAction={this.tripAction} key={index} />)    
             }
         })
-        
-        // empList = empData.length != 0 ?
-        //     empData.map((employee, index) => {
-        //     employee.show = 0;
-        //     if (assignType == employee.type) {
-        //         return (
-        //             <DriverEmployee employee={employee} tripAction={this.tripAction} key={index} />
-        //         )
-        //     }
-        //     }) :
-        //    null
-           console.log('empList>>>',empList)
+
         return (
             <View>
 
@@ -116,11 +113,11 @@ export class DriverEmployee extends React.PureComponent {
             buttonLabel: STRCONSTANT.DRIVER_START_TRIP,
             // isOTPOpen: false
         }
-        console.log(toJS(this.props.employee))
+        //console.log(toJS(this.props.employee))
     }
 
     expandCard = (isExpand, currId) => {
-        console.log('>>>>>>', isExpand, currId)
+        //console.log('>>>>>>', isExpand, currId)
         if (this.state.currOpenId == currId) {
             this.setState({
                 currOpenId: ''
@@ -135,9 +132,11 @@ export class DriverEmployee extends React.PureComponent {
 
         if (this.state.buttonLabel == STRCONSTANT.DRIVER_END_TRIP) {
             isOTPOpen = true;
+        } else {
+            isOTPOpen = false;
         }
         this.setState({ buttonLabel: STRCONSTANT.DRIVER_END_TRIP })
-        console.log('call parent from child>>>')
+       // console.log('call parent from child>>>')
         this.props.tripAction(action, empID, isOTPOpen);
     }
 
@@ -185,10 +184,10 @@ export class DriverEmployee extends React.PureComponent {
                                         {employee.empPhoneNumber ? employee.empPhoneNumber : 'No Contact'}
                                     </Text>
                                     <Text style={[styles.cardText, styles.textPadTop]}>
-                                        CHECK-IN: {employee.tripTime ? employee.tripTime : 'No CheckIn'}
+                                    {employee.type == 'LOGIN'?'Check-In': 'Check-Out'}: {employee.tripTime ? employee.tripTime : 'No CheckIn'}
                                     </Text>
                                     <Text style={[styles.cardText, styles.textPadTop]}>
-                                        PICK         : {employee.pickupTime ? employee.pickupTime : 'No Pick'}
+                                        Pick         : {employee.pickupTime ? employee.pickupTime : 'No Pick'}
                                     </Text>
                                 </View>
                                 <View style={styles.rightSec}>
@@ -220,7 +219,7 @@ const styles = StyleSheet.create({
     cardView: {
         backgroundColor: COLOR.CARD_BG_COLOR,
         width: wp('97%'),
-        height: hp('5%'),
+        height: screenHgt >= hightVariation ? hp('5%') : hp('6%'),
         alignSelf: 'center',
         marginTop: 5,
         borderRadius: 10
@@ -303,7 +302,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         // marginBottom: 20,
         height: 18,
-        marginTop: 15,
+        marginTop: 25,
         width: wp('45%'),
         // marginLeft: 60
     },

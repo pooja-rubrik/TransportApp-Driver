@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
 		backgroundColor: COLOR.OTP_BG_COLOR,
 		padding: 20,
 		borderRadius: 10,
-        height: hp('16%'),
+        // height: hp('16%'),
         borderColor: COLOR.HEADER_BG_COLOR,
         borderWidth: .2,
         width: wp('45%'),
